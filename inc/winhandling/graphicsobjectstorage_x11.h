@@ -33,6 +33,7 @@ private:
 	static GraphicsObjectStorage_X11* instance;
 	static std::mutex instanceCreationMutex;
 
+	std::mutex rwMutex;
 	IdToObjectPtrMapT objectsMap;
 };
 

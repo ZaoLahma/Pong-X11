@@ -22,6 +22,7 @@ private:
 	UniqueIdProvider();
 	static UniqueIdProvider* instance;
 	static std::mutex instanceCreationMutex;
+	std::mutex getIdMutex;
 	uint32_t currentId;
 };
 

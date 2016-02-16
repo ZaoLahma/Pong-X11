@@ -33,5 +33,6 @@ UniqueIdProvider* UniqueIdProvider::GetApi()
 
 uint32_t UniqueIdProvider::GetUniqueId()
 {
+	std::unique_lock<std::mutex> getIdLock(getIdMutex);
 	return currentId++;
 }
