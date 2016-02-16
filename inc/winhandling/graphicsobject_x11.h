@@ -60,6 +60,8 @@ class GraphicsObjectClickable_X11 : public GraphicsObject_X11, public EventListe
 public:
 	GraphicsObjectClickable_X11(const Coord& _pos, const Coord& _size);
 
+	virtual ~GraphicsObjectClickable_X11();
+
 	virtual void Paint(Display* display, Window* win, int screenNo) = 0;
 
 	void HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr);

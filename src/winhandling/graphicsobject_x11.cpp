@@ -66,6 +66,12 @@ beingPressed(false)
 	JobDispatcher::GetApi()->SubscribeToEvent(GRAPHICS_MOUSE_RELEASED_EVENT, this);
 }
 
+GraphicsObjectClickable_X11::~GraphicsObjectClickable_X11()
+{
+	JobDispatcher::GetApi()->UnsubscribeToEvent(GRAPHICS_MOUSE_CLICKED_EVENT, this);
+	JobDispatcher::GetApi()->UnsubscribeToEvent(GRAPHICS_MOUSE_RELEASED_EVENT, this);
+}
+
 void GraphicsObjectClickable_X11::HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr)
 {
 	switch(eventNo)
