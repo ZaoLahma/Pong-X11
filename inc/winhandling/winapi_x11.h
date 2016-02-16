@@ -12,13 +12,18 @@
 #include <X11/Xutil.h>
 #include <X11/Xos.h>
 #include "coord.h"
+#include "jobdispatcher/eventlistenerbase.h"
 
-class WinApi_X11
+class WinApi_X11 : EventListenerBase
 {
 public:
 	WinApi_X11(const Coord& _winSize);
+
 	void EventLoop();
 
+	void HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr);
+
+	void ResizeWindow(const Coord& newSize);
 protected:
 
 private:

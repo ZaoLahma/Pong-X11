@@ -8,6 +8,9 @@
 #include "winhandling/winapi_x11.h"
 #include "winhandling/graphicsobject_x11.h"
 #include "winhandling/graphicsobjectstorage_x11.h"
+#include "winhandling/graphicsevents.h"
+
+#include "jobdispatcher/jobdispatcher.h"
 
 #include <iostream>
 
@@ -50,6 +53,14 @@ running(false)
 	//Testing purposes... Remove me
 	GraphicsObjectString_X11* testString = new GraphicsObjectString_X11(Coord(20, 20), "Hej");
 
+	JobDispatcher::GetApi()->SubscribeToEvent(GRAPHICS_AVAIL_EVENT, this);
+
+	JobDispatcher::GetApi()->SubscribeToEvent(GRAPHICS_WIN_RESIZE_EVENT, this);
+
+	JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_AVAIL_EVENT, nullptr);
+
+	//Testing purposes... Remove me
+	JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_WIN_RESIZE_EVENT, new WinResizeEventData(Coord(400, 400)));
 }
 
 void WinApi_X11::EventLoop()
@@ -89,4 +100,28 @@ void WinApi_X11::EventLoop()
 	XDestroyWindow(displayPtr, window);
 	XCloseDisplay(displayPtr);
 
+}
+
+void WinApi_X11::HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr)
+{
+	switch(eventNo)
+	{
+	case GRAPHICS_AVAIL_EVENT:
+		break;
+
+	case GRAPHICS_WIN_RESIZE_EVENT:
+	{
+		const WinResizeEventData* resizeDataPtr = static_cast<const WinResizeEventData*>(dataPtr);
+		winSize = resizeDataPtr->GetNewSize();
+		ResizeWindow(winSize);
+	}
+		break;
+	default:
+		break;
+	}
+}
+
+void WinApi_X11::ResizeWindow(const Coord& newSize)
+{
+	XResizeWindow(displayPtr, window, newSize.GetX(), newSize.GetY());
 }

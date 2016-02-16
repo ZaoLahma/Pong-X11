@@ -22,6 +22,8 @@ public:
 
 	void AddObject(GraphicsObject_X11* _obj);
 
+	void RemoveObject(const uint32_t _objId);
+
 	void Paint(Display* display, Window* win, int screenNo);
 
 protected:

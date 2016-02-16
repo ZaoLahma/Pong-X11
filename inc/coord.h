@@ -15,8 +15,8 @@ public:
 	Coord();
 	Coord(int x, int y);
 
-	int GetX();
-	int GetY();
+	int GetX() const;
+	int GetY() const;
 
 	void SetX(const int _x);
 	void SetY(const int _y);

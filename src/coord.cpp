@@ -21,12 +21,12 @@ y(_y)
 
 }
 
-int Coord::GetX()
+int Coord::GetX() const
 {
 	return x;
 }
 
-int Coord::GetY()
+int Coord::GetY() const
 {
 	return y;
 }

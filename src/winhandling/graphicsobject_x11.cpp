@@ -21,7 +21,7 @@ objectId(UniqueIdProvider::GetApi()->GetUniqueId())
 
 GraphicsObject_X11::~GraphicsObject_X11()
 {
-
+	GraphicsObjectStorage_X11::GetApi()->RemoveObject(objectId);
 }
 
 uint32_t GraphicsObject_X11::GetObjectId() const

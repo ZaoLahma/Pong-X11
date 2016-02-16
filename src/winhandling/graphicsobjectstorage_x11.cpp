@@ -34,6 +34,17 @@ void GraphicsObjectStorage_X11::AddObject(GraphicsObject_X11* _obj)
 	objectsMap[_obj->GetObjectId()] = _obj;
 }
 
+void GraphicsObjectStorage_X11::RemoveObject(const uint32_t _objId)
+{
+	std::unique_lock<std::mutex> rwLock(rwMutex);
+
+	IdToObjectPtrMapT::iterator objIter = objectsMap.find(_objId);
+
+	if(objectsMap.end() != objIter)
+	{
+		objectsMap.erase(objIter);
+	}
+}
 
 void GraphicsObjectStorage_X11::Paint(Display* display, Window* win, int screenNo)
 {
