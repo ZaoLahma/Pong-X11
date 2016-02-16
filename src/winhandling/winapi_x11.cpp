@@ -83,7 +83,6 @@ void WinApi_X11::EventLoop()
 		if(e.type == ButtonPress)
 		{
 			JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_MOUSE_CLICKED_EVENT, new MouseClickedData(Coord(e.xbutton.x, e.xbutton.y)));
-			std::cout<<"Raising event mouse clicked"<<std::endl;
 		}
 
 		if(e.type == ButtonRelease)
@@ -123,9 +122,7 @@ void WinApi_X11::HandleEvent(const uint32_t eventNo, const EventDataBase* dataPt
 		break;
 
 	case GRAPHICS_REDRAW_EVENT:
-		XClearWindow(displayPtr, window);
-		GraphicsObjectStorage_X11::GetApi()->Paint(displayPtr, &window, screenNo);
-		XFlush(displayPtr);
+		RedrawWindow();
 		break;
 	default:
 		break;
@@ -135,4 +132,11 @@ void WinApi_X11::HandleEvent(const uint32_t eventNo, const EventDataBase* dataPt
 void WinApi_X11::ResizeWindow(const Coord& newSize)
 {
 	XResizeWindow(displayPtr, window, newSize.GetX(), newSize.GetY());
+}
+
+void WinApi_X11::RedrawWindow()
+{
+	XClearWindow(displayPtr, window);
+	GraphicsObjectStorage_X11::GetApi()->Paint(displayPtr, &window, screenNo);
+	XFlush(displayPtr);
 }

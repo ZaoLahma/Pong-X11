@@ -118,7 +118,6 @@ void GraphicsObjectButton_X11::Paint(Display* display, Window* win, int screenNo
 {
 	if(!beingPressed)
 	{
-		std::cout<<"Not being pressed"<<std::endl;
 		XDrawLine(display, *win, DefaultGC(display, screenNo), pos.GetX(), pos.GetY(), pos.GetX() + size.GetX(), pos.GetY()); //Upper line
 		XDrawLine(display, *win, DefaultGC(display, screenNo), pos.GetX(), pos.GetY() + size.GetY(), pos.GetX() + size.GetX(), pos.GetY() + size.GetY()); //lower line
 		XDrawArc(display, *win, DefaultGC(display, screenNo), pos.GetX() - 2, pos.GetY(), 4, size.GetY(), -45 * 64, -270 * 64);
@@ -126,7 +125,6 @@ void GraphicsObjectButton_X11::Paint(Display* display, Window* win, int screenNo
 	}
 	else
 	{
-		std::cout<<"Being pressed"<<std::endl;
 		XFillRectangle(display, *win, DefaultGC(display, screenNo), pos.GetX(), pos.GetY(), size.GetX(), size.GetY());
 		XFillArc(display, *win, DefaultGC(display, screenNo), pos.GetX() - 2, pos.GetY(), 4, size.GetY(), -45 * 64, -270 * 64);
 		XFillArc(display, *win, DefaultGC(display, screenNo), pos.GetX() + size.GetX() - 2, pos.GetY(), 4, size.GetY(), -90 * 64, 180 * 64);

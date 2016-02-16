@@ -19,7 +19,11 @@
 class GraphicsObjectStorage_X11
 {
 public:
+	~GraphicsObjectStorage_X11();
+
 	static GraphicsObjectStorage_X11* GetApi();
+
+	void DropInstance();
 
 	void AddObject(GraphicsObject_X11* _obj);
 

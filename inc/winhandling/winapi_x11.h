@@ -28,6 +28,9 @@ protected:
 
 private:
 	WinApi_X11();
+
+	void RedrawWindow();
+
 	Coord winSize;
 	Display* displayPtr;
 	Window window;

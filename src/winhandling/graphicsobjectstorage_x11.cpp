@@ -5,6 +5,7 @@
  *      Author: janne
  */
 #include "winhandling/graphicsobjectstorage_x11.h"
+#include <iostream>
 
 GraphicsObjectStorage_X11* GraphicsObjectStorage_X11::instance = nullptr;
 std::mutex GraphicsObjectStorage_X11::instanceCreationMutex;
@@ -12,6 +13,16 @@ std::mutex GraphicsObjectStorage_X11::instanceCreationMutex;
 GraphicsObjectStorage_X11::GraphicsObjectStorage_X11()
 {
 
+}
+
+GraphicsObjectStorage_X11::~GraphicsObjectStorage_X11()
+{
+	IdToObjectPtrMapT::iterator objIter = objectsMap.begin();
+
+	if(objIter != objectsMap.end())
+	{
+		std::cout<<"ERROR: Leaking graphics objects at delete of GraphicsObjectStorage_X11. Make sure to remove the objects before calling drop instance"<<std::endl;
+	}
 }
 
 GraphicsObjectStorage_X11* GraphicsObjectStorage_X11::GetApi()
@@ -26,6 +37,12 @@ GraphicsObjectStorage_X11* GraphicsObjectStorage_X11::GetApi()
 	}
 
 	return instance;
+}
+
+void GraphicsObjectStorage_X11::DropInstance()
+{
+	delete instance;
+	instance = nullptr;
 }
 
 void GraphicsObjectStorage_X11::AddObject(GraphicsObject_X11* _obj)
