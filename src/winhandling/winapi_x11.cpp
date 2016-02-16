@@ -7,7 +7,8 @@
 
 #include "winhandling/winapi_x11.h"
 
-WinApi_X11::WinApi_X11() :
+WinApi_X11::WinApi_X11(const Coord& _winSize) :
+winSize(_winSize),
 displayPtr(nullptr),
 screenNo(-1),
 running(false)
@@ -21,8 +22,8 @@ running(false)
 								 RootWindow(displayPtr, screenNo),
 								 10,
 								 10,
-								 300,
-								 200,
+								 winSize.GetX(),
+								 winSize.GetY(),
 								 1,
 	                             BlackPixel(displayPtr, screenNo),
 								 WhitePixel(displayPtr, screenNo));
