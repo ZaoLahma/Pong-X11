@@ -27,3 +27,19 @@ GraphicsObjectStorage_X11* GraphicsObjectStorage_X11::GetApi()
 
 	return instance;
 }
+
+void GraphicsObjectStorage_X11::AddObject(GraphicsObject_X11* _obj)
+{
+	objectsMap[_obj->GetObjectId()] = _obj;
+}
+
+
+void GraphicsObjectStorage_X11::Paint(Display* display, Window* win, int screenNo)
+{
+	IdToObjectPtrMapT::iterator objIter = objectsMap.begin();
+
+	for( ; objIter != objectsMap.end(); ++objIter)
+	{
+		objIter->second->Paint(display, win, screenNo);
+	}
+}

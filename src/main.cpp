@@ -1,6 +1,6 @@
+#include "../inc/coord.h"
 #include "jobdispatcher/jobdispatcher.h"
 #include "winhandling/winapi_x11.h"
-#include "winhandling/coord.h"
 
 int main(void)
 {

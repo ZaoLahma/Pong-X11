@@ -6,6 +6,10 @@
  */
 
 #include "winhandling/winapi_x11.h"
+#include "winhandling/graphicsobject_x11.h"
+#include "winhandling/graphicsobjectstorage_x11.h"
+
+#include <iostream>
 
 WinApi_X11::WinApi_X11(const Coord& _winSize) :
 winSize(_winSize),
@@ -43,6 +47,9 @@ running(false)
 
 	XSetWMProtocols(displayPtr, window, &WM_DELETE_WINDOW, 1);
 
+	//Testing purposes... Remove me
+	GraphicsObjectString_X11* testString = new GraphicsObjectString_X11(Coord(20, 20), "Hej");
+
 }
 
 void WinApi_X11::EventLoop()
@@ -55,7 +62,7 @@ void WinApi_X11::EventLoop()
 		XNextEvent(displayPtr, &e);
 		if (e.type == Expose)
 		{
-
+			GraphicsObjectStorage_X11::GetApi()->Paint(displayPtr, &window, screenNo);
 		}
 
 		if(e.type == ButtonPress)

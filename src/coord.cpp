@@ -5,7 +5,7 @@
  *      Author: janne
  */
 
-#include "winhandling/coord.h"
+#include "coord.h"
 
 Coord::Coord() :
 x(0),

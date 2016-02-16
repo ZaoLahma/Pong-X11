@@ -14,22 +14,33 @@
 #include <string>
 #include <mutex>
 
+#include "coord.h"
+
+class Coord;
+
 class GraphicsObject_X11
 {
 public:
-	GraphicsObject_X11();
+	GraphicsObject_X11(const Coord& _pos);
 	virtual ~GraphicsObject_X11();
 	virtual void Paint(Display* display, Window* win, int screenNo) = 0;
 
+	uint32_t GetObjectId() const;
+
+	const Coord& GetPos();
+
 protected:
+	Coord pos;
 
 private:
+	GraphicsObject_X11();
+	uint32_t objectId;
 };
 
 class GraphicsObjectString_X11 : public GraphicsObject_X11
 {
 public:
-	GraphicsObjectString_X11(const std::string& _str);
+	GraphicsObjectString_X11(const Coord& _pos, const std::string& _str);
 	void Paint(Display* display, Window* win, int screenNo);
 	void SetString(const std::string& _str);
 
