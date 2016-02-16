@@ -53,9 +53,13 @@ running(false)
 	//Testing purposes... Remove me
 	GraphicsObjectString_X11* testString = new GraphicsObjectString_X11(Coord(20, 20), "Hej");
 
+	GraphicsObjectButton_X11* testButton = new GraphicsObjectButton_X11(Coord(30, 30), Coord(30, 20));
+
 	JobDispatcher::GetApi()->SubscribeToEvent(GRAPHICS_AVAIL_EVENT, this);
 
 	JobDispatcher::GetApi()->SubscribeToEvent(GRAPHICS_WIN_RESIZE_EVENT, this);
+
+	JobDispatcher::GetApi()->SubscribeToEvent(GRAPHICS_REDRAW_EVENT, this);
 
 	JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_AVAIL_EVENT, nullptr);
 
@@ -78,12 +82,13 @@ void WinApi_X11::EventLoop()
 
 		if(e.type == ButtonPress)
 		{
-
+			JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_MOUSE_CLICKED_EVENT, new MouseClickedData(Coord(e.xbutton.x, e.xbutton.y)));
+			std::cout<<"Raising event mouse clicked"<<std::endl;
 		}
 
 		if(e.type == ButtonRelease)
 		{
-
+			JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_MOUSE_RELEASED_EVENT, new MouseClickedData(Coord(e.xbutton.x, e.xbutton.y)));
 		}
 
 		if (e.type == KeyPress)
@@ -115,6 +120,12 @@ void WinApi_X11::HandleEvent(const uint32_t eventNo, const EventDataBase* dataPt
 		winSize = resizeDataPtr->GetNewSize();
 		ResizeWindow(winSize);
 	}
+		break;
+
+	case GRAPHICS_REDRAW_EVENT:
+		XClearWindow(displayPtr, window);
+		GraphicsObjectStorage_X11::GetApi()->Paint(displayPtr, &window, screenNo);
+		XFlush(displayPtr);
 		break;
 	default:
 		break;

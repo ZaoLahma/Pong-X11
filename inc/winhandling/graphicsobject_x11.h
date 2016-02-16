@@ -15,6 +15,7 @@
 #include <mutex>
 
 #include "coord.h"
+#include "jobdispatcher/eventlistenerbase.h"
 
 class Coord;
 
@@ -54,5 +55,39 @@ private:
 	std::mutex readWriteMutex;
 };
 
+class GraphicsObjectClickable_X11 : public GraphicsObject_X11, public EventListenerBase
+{
+public:
+	GraphicsObjectClickable_X11(const Coord& _pos, const Coord& _size);
+
+	virtual void Paint(Display* display, Window* win, int screenNo) = 0;
+
+	void HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr);
+
+
+protected:
+	Coord size;
+	bool beingPressed;
+
+private:
+	GraphicsObjectClickable_X11();
+	virtual void OnClick();
+	virtual void OnRelease();
+
+};
+
+class GraphicsObjectButton_X11 : public GraphicsObjectClickable_X11
+{
+public:
+	GraphicsObjectButton_X11(const Coord& _pos, const Coord& _size);
+
+	void Paint(Display* display, Window* win, int screenNo);
+
+
+protected:
+
+private:
+	GraphicsObjectButton_X11();
+};
 
 #endif /* INC_WINHANDLING_GRAPHICSOBJECT_X11_H_ */

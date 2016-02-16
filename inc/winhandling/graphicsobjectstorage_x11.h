@@ -14,6 +14,7 @@
 #include <X11/Xos.h>
 
 #include "graphicsobject_x11.h"
+#include "jobdispatcher/eventlistenerbase.h"
 
 class GraphicsObjectStorage_X11
 {
@@ -25,6 +26,8 @@ public:
 	void RemoveObject(const uint32_t _objId);
 
 	void Paint(Display* display, Window* win, int screenNo);
+
+	void HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr);
 
 protected:
 

@@ -8,6 +8,8 @@
 
 #include "winhandling/graphicsobject_x11.h"
 #include "winhandling/graphicsobjectstorage_x11.h"
+#include "winhandling/graphicsevents.h"
+#include "jobdispatcher/jobdispatcher.h"
 #include "uniqueidprovider.h"
 
 #include <iostream>
@@ -52,4 +54,81 @@ void GraphicsObjectString_X11::SetString(const std::string& _str)
 {
 	std::unique_lock<std::mutex> rwLock(readWriteMutex);
 	str = _str;
+}
+
+//Clickable
+GraphicsObjectClickable_X11::GraphicsObjectClickable_X11(const Coord& _pos, const Coord& _size):
+GraphicsObject_X11(_pos),
+size(_size),
+beingPressed(false)
+{
+	JobDispatcher::GetApi()->SubscribeToEvent(GRAPHICS_MOUSE_CLICKED_EVENT, this);
+	JobDispatcher::GetApi()->SubscribeToEvent(GRAPHICS_MOUSE_RELEASED_EVENT, this);
+}
+
+void GraphicsObjectClickable_X11::HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr)
+{
+	switch(eventNo)
+	{
+	case GRAPHICS_MOUSE_CLICKED_EVENT:
+	{
+		const MouseClickedData* mouseClickedData = static_cast<const MouseClickedData*>(dataPtr);
+		const Coord clickPos = mouseClickedData->GetPos();
+
+		if(clickPos.GetX() >= pos.GetX() && clickPos.GetX() <= pos.GetX() + size.GetX() &&
+		   clickPos.GetY() >= pos.GetY() && clickPos.GetY() <= pos.GetY() + size.GetY())
+		{
+			OnClick();
+		}
+	}
+	break;
+	case GRAPHICS_MOUSE_RELEASED_EVENT:
+	{
+		if(beingPressed)
+		{
+			OnRelease();
+		}
+	}
+	break;
+	default:
+		break;
+	}
+}
+
+void GraphicsObjectClickable_X11::OnClick()
+{
+	beingPressed = true;
+	JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_REDRAW_EVENT, nullptr);
+}
+
+void GraphicsObjectClickable_X11::OnRelease()
+{
+	beingPressed = false;
+	JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_REDRAW_EVENT, nullptr);
+}
+
+//Button
+GraphicsObjectButton_X11::GraphicsObjectButton_X11(const Coord& _pos, const Coord& _size) :
+GraphicsObjectClickable_X11(_pos, _size)
+{
+
+}
+
+void GraphicsObjectButton_X11::Paint(Display* display, Window* win, int screenNo)
+{
+	if(!beingPressed)
+	{
+		std::cout<<"Not being pressed"<<std::endl;
+		XDrawLine(display, *win, DefaultGC(display, screenNo), pos.GetX(), pos.GetY(), pos.GetX() + size.GetX(), pos.GetY()); //Upper line
+		XDrawLine(display, *win, DefaultGC(display, screenNo), pos.GetX(), pos.GetY() + size.GetY(), pos.GetX() + size.GetX(), pos.GetY() + size.GetY()); //lower line
+		XDrawArc(display, *win, DefaultGC(display, screenNo), pos.GetX() - 2, pos.GetY(), 4, size.GetY(), -45 * 64, -270 * 64);
+		XDrawArc(display, *win, DefaultGC(display, screenNo), pos.GetX() + size.GetX() - 2, pos.GetY(), 4, size.GetY(), -90 * 64, 180 * 64);
+	}
+	else
+	{
+		std::cout<<"Being pressed"<<std::endl;
+		XFillRectangle(display, *win, DefaultGC(display, screenNo), pos.GetX(), pos.GetY(), size.GetX(), size.GetY());
+		XFillArc(display, *win, DefaultGC(display, screenNo), pos.GetX() - 2, pos.GetY(), 4, size.GetY(), -45 * 64, -270 * 64);
+		XFillArc(display, *win, DefaultGC(display, screenNo), pos.GetX() + size.GetX() - 2, pos.GetY(), 4, size.GetY(), -90 * 64, 180 * 64);
+	}
 }
