@@ -12,6 +12,7 @@
 #include <X11/Xutil.h>
 #include <X11/Xos.h>
 #include <string>
+#include <mutex>
 
 class GraphicsObject_X11
 {
@@ -30,12 +31,16 @@ class GraphicsObjectString_X11 : public GraphicsObject_X11
 public:
 	GraphicsObjectString_X11(const std::string& _str);
 	void Paint(Display* display, Window* win, int screenNo);
+	void SetString(const std::string& _str);
 
 protected:
 
 private:
 	GraphicsObjectString_X11();
 	std::string str;
+
+	//Needed to ensure the string is not altered while being rendered
+	std::mutex readWriteMutex;
 };
 
 
