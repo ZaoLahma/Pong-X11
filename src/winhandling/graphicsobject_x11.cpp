@@ -84,7 +84,9 @@ void GraphicsObjectClickable_X11::HandleEvent(const uint32_t eventNo, const Even
 		if(clickPos.GetX() >= pos.GetX() && clickPos.GetX() <= pos.GetX() + size.GetX() &&
 		   clickPos.GetY() >= pos.GetY() && clickPos.GetY() <= pos.GetY() + size.GetY())
 		{
+			beingPressed = true;
 			OnClick();
+			JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_REDRAW_EVENT, nullptr);
 		}
 	}
 	break;
@@ -92,7 +94,9 @@ void GraphicsObjectClickable_X11::HandleEvent(const uint32_t eventNo, const Even
 	{
 		if(beingPressed)
 		{
+			beingPressed = false;
 			OnRelease();
+			JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_REDRAW_EVENT, nullptr);
 		}
 	}
 	break;
@@ -103,14 +107,12 @@ void GraphicsObjectClickable_X11::HandleEvent(const uint32_t eventNo, const Even
 
 void GraphicsObjectClickable_X11::OnClick()
 {
-	beingPressed = true;
-	JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_REDRAW_EVENT, nullptr);
+
 }
 
 void GraphicsObjectClickable_X11::OnRelease()
 {
-	beingPressed = false;
-	JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_REDRAW_EVENT, nullptr);
+
 }
 
 //Button
