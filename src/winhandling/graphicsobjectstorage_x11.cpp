@@ -19,10 +19,13 @@ GraphicsObjectStorage_X11::~GraphicsObjectStorage_X11()
 {
 	IdToObjectPtrMapT::iterator objIter = objectsMap.begin();
 
-	if(objIter != objectsMap.end())
+	while(objIter != objectsMap.end())
 	{
-		std::cout<<"ERROR: Leaking graphics objects at delete of GraphicsObjectStorage_X11. Make sure to remove the objects before calling drop instance"<<std::endl;
+		delete objIter->second;
+		objIter = objectsMap.begin();
 	}
+
+	objectsMap.clear();
 }
 
 GraphicsObjectStorage_X11* GraphicsObjectStorage_X11::GetApi()
