@@ -10,7 +10,7 @@
 #include "winhandling/graphicsobjectstorage_x11.h"
 #include "winhandling/graphicsevents.h"
 #include "jobdispatcher/jobdispatcher.h"
-#include "uniqueidprovider.h"
+#include "jobdispatcher/uniqueidprovider.h"
 
 #include <iostream>
 
@@ -84,9 +84,7 @@ void GraphicsObjectClickable_X11::HandleEvent(const uint32_t eventNo, const Even
 		if(clickPos.GetX() >= pos.GetX() && clickPos.GetX() <= pos.GetX() + size.GetX() &&
 		   clickPos.GetY() >= pos.GetY() && clickPos.GetY() <= pos.GetY() + size.GetY())
 		{
-			beingPressed = true;
 			OnClick();
-			JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_REDRAW_EVENT, nullptr);
 		}
 	}
 	break;
@@ -94,25 +92,13 @@ void GraphicsObjectClickable_X11::HandleEvent(const uint32_t eventNo, const Even
 	{
 		if(beingPressed)
 		{
-			beingPressed = false;
 			OnRelease();
-			JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_REDRAW_EVENT, nullptr);
 		}
 	}
 	break;
 	default:
 		break;
 	}
-}
-
-void GraphicsObjectClickable_X11::OnClick()
-{
-
-}
-
-void GraphicsObjectClickable_X11::OnRelease()
-{
-
 }
 
 //Button
@@ -137,4 +123,16 @@ void GraphicsObjectButton_X11::Paint(Display* display, Window* win, int screenNo
 		XFillArc(display, *win, DefaultGC(display, screenNo), pos.GetX() - 2, pos.GetY(), 4, size.GetY(), -45 * 64, -270 * 64);
 		XFillArc(display, *win, DefaultGC(display, screenNo), pos.GetX() + size.GetX() - 2, pos.GetY(), 4, size.GetY(), -90 * 64, 180 * 64);
 	}
+}
+
+void GraphicsObjectButton_X11::OnClick()
+{
+	beingPressed = true;
+	JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_REDRAW_EVENT, nullptr);
+}
+
+void GraphicsObjectButton_X11::OnRelease()
+{
+	beingPressed = false;
+	JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_REDRAW_EVENT, nullptr);
 }

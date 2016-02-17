@@ -73,8 +73,8 @@ protected:
 
 private:
 	GraphicsObjectClickable_X11();
-	virtual void OnClick();
-	virtual void OnRelease();
+	virtual void OnClick() = 0;
+	virtual void OnRelease() = 0;
 
 };
 
@@ -90,6 +90,9 @@ protected:
 
 private:
 	GraphicsObjectButton_X11();
+
+	void OnClick();
+	void OnRelease();
 };
 
 #endif /* INC_WINHANDLING_GRAPHICSOBJECT_X11_H_ */
