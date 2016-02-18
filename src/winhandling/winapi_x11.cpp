@@ -150,7 +150,5 @@ void WinApi_X11::ResizeWindow(const Coord& newSize)
 
 void WinApi_X11::RedrawWindow()
 {
-	XClearWindow(displayPtr, window);
 	GraphicsObjectStorage_X11::GetApi()->Paint();
-	XFlush(displayPtr);
 }
