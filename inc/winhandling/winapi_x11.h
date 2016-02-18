@@ -14,10 +14,13 @@
 #include "coord.h"
 #include "jobdispatcher/eventlistenerbase.h"
 
+struct WinDataS;
+
 class WinApi_X11 : public EventListenerBase
 {
 public:
 	WinApi_X11(const Coord& _winSize);
+	~WinApi_X11();
 
 	void EventLoop();
 
@@ -38,6 +41,8 @@ private:
 
 	int screenNo;
 	bool running;
+
+	WinDataS* winDataPtr;
 
 };
 

@@ -10,7 +10,8 @@
 GraphicsObjectStorage_X11* GraphicsObjectStorage_X11::instance = nullptr;
 std::mutex GraphicsObjectStorage_X11::instanceCreationMutex;
 
-GraphicsObjectStorage_X11::GraphicsObjectStorage_X11()
+GraphicsObjectStorage_X11::GraphicsObjectStorage_X11() :
+winDataPtr(nullptr)
 {
 
 }
@@ -66,7 +67,7 @@ void GraphicsObjectStorage_X11::RemoveObject(const uint32_t _objId)
 	}
 }
 
-void GraphicsObjectStorage_X11::Paint(Display* display, Window* win, int screenNo)
+void GraphicsObjectStorage_X11::Paint()
 {
 	std::unique_lock<std::mutex> rwLock(rwMutex);
 
@@ -74,6 +75,16 @@ void GraphicsObjectStorage_X11::Paint(Display* display, Window* win, int screenN
 
 	for( ; objIter != objectsMap.end(); ++objIter)
 	{
-		objIter->second->Paint(display, win, screenNo);
+		objIter->second->Paint();
 	}
+}
+
+void GraphicsObjectStorage_X11::SetWinDataPtr(WinDataS* _winDataPtr)
+{
+	winDataPtr = _winDataPtr;
+}
+
+const WinDataS* GraphicsObjectStorage_X11::GetWinDataPtr()
+{
+	return winDataPtr;
 }

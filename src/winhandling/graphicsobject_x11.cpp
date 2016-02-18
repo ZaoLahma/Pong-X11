@@ -16,14 +16,19 @@
 
 GraphicsObject_X11::GraphicsObject_X11(const Coord& _pos) :
 pos(_pos),
+winDataPtr(GraphicsObjectStorage_X11::GetApi()->GetWinDataPtr()),
 objectId(UniqueIdProvider::GetApi()->GetUniqueId())
 {
 	GraphicsObjectStorage_X11::GetApi()->AddObject(this);
+
+	graphicsContext = XCreateGC(winDataPtr->displayPtr, *winDataPtr->winPtr, 0, 0);
+	colormap = DefaultColormap(winDataPtr->displayPtr, winDataPtr->screenNo);
 }
 
 GraphicsObject_X11::~GraphicsObject_X11()
 {
 	GraphicsObjectStorage_X11::GetApi()->RemoveObject(objectId);
+	XFreeGC(winDataPtr->displayPtr, graphicsContext);
 }
 
 uint32_t GraphicsObject_X11::GetObjectId() const
@@ -44,10 +49,10 @@ str(_str)
 
 }
 
-void GraphicsObjectString_X11::Paint(Display* displayPtr, Window* winPtr, const int screenNo)
+void GraphicsObjectString_X11::Paint()
 {
 	std::unique_lock<std::mutex> rwLock(readWriteMutex);
-	XDrawString(displayPtr, *winPtr, DefaultGC(displayPtr, screenNo), pos.GetX(), pos.GetY(), str.c_str(), str.length());
+	XDrawString(winDataPtr->displayPtr, *winDataPtr->winPtr, graphicsContext, pos.GetX(), pos.GetY(), str.c_str(), str.length());
 }
 
 void GraphicsObjectString_X11::SetString(const std::string& _str)
@@ -105,23 +110,26 @@ void GraphicsObjectClickable_X11::HandleEvent(const uint32_t eventNo, const Even
 GraphicsObjectButton_X11::GraphicsObjectButton_X11(const Coord& _pos, const Coord& _size) :
 GraphicsObjectClickable_X11(_pos, _size)
 {
-
+	xcolor.red = 32000; xcolor.green = 65000; xcolor.blue = 32000;
+	xcolor.flags = DoRed | DoGreen | DoBlue;
+	XAllocColor(winDataPtr->displayPtr, colormap, &xcolor);
+	XSetForeground(winDataPtr->displayPtr, graphicsContext, xcolor.pixel);
 }
 
-void GraphicsObjectButton_X11::Paint(Display* display, Window* win, int screenNo)
+void GraphicsObjectButton_X11::Paint()
 {
 	if(!beingPressed)
 	{
-		XDrawLine(display, *win, DefaultGC(display, screenNo), pos.GetX(), pos.GetY(), pos.GetX() + size.GetX(), pos.GetY()); //Upper line
-		XDrawLine(display, *win, DefaultGC(display, screenNo), pos.GetX(), pos.GetY() + size.GetY(), pos.GetX() + size.GetX(), pos.GetY() + size.GetY()); //lower line
-		XDrawArc(display, *win, DefaultGC(display, screenNo), pos.GetX() - 2, pos.GetY(), 4, size.GetY(), -45 * 64, -270 * 64);
-		XDrawArc(display, *win, DefaultGC(display, screenNo), pos.GetX() + size.GetX() - 2, pos.GetY(), 4, size.GetY(), -90 * 64, 180 * 64);
+		XDrawLine(winDataPtr->displayPtr, *winDataPtr->winPtr, graphicsContext, pos.GetX(), pos.GetY(), pos.GetX() + size.GetX(), pos.GetY()); //Upper line
+		XDrawLine(winDataPtr->displayPtr, *winDataPtr->winPtr, graphicsContext, pos.GetX(), pos.GetY() + size.GetY(), pos.GetX() + size.GetX(), pos.GetY() + size.GetY()); //lower line
+		XDrawArc(winDataPtr->displayPtr, *winDataPtr->winPtr, graphicsContext, pos.GetX() - 2, pos.GetY(), 4, size.GetY(), -45 * 64, -270 * 64);
+		XDrawArc(winDataPtr->displayPtr, *winDataPtr->winPtr, graphicsContext, pos.GetX() + size.GetX() - 2, pos.GetY(), 4, size.GetY(), -90 * 64, 180 * 64);
 	}
 	else
 	{
-		XFillRectangle(display, *win, DefaultGC(display, screenNo), pos.GetX(), pos.GetY(), size.GetX(), size.GetY());
-		XFillArc(display, *win, DefaultGC(display, screenNo), pos.GetX() - 2, pos.GetY(), 4, size.GetY(), -45 * 64, -270 * 64);
-		XFillArc(display, *win, DefaultGC(display, screenNo), pos.GetX() + size.GetX() - 2, pos.GetY(), 4, size.GetY(), -90 * 64, 180 * 64);
+		XFillRectangle(winDataPtr->displayPtr, *winDataPtr->winPtr, graphicsContext, pos.GetX(), pos.GetY(), size.GetX(), size.GetY());
+		XFillArc(winDataPtr->displayPtr, *winDataPtr->winPtr, graphicsContext, pos.GetX() - 2, pos.GetY(), 4, size.GetY(), -45 * 64, -270 * 64);
+		XFillArc(winDataPtr->displayPtr, *winDataPtr->winPtr, graphicsContext, pos.GetX() + size.GetX() - 2, pos.GetY(), 4, size.GetY(), -90 * 64, 180 * 64);
 	}
 }
 

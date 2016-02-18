@@ -18,13 +18,14 @@
 #include "jobdispatcher/eventlistenerbase.h"
 
 class Coord;
+struct WinDataS;
 
 class GraphicsObject_X11
 {
 public:
 	GraphicsObject_X11(const Coord& _pos);
 	virtual ~GraphicsObject_X11();
-	virtual void Paint(Display* display, Window* win, int screenNo) = 0;
+	virtual void Paint() = 0;
 
 	uint32_t GetObjectId() const;
 
@@ -32,6 +33,10 @@ public:
 
 protected:
 	Coord pos;
+	const WinDataS* winDataPtr;
+	GC graphicsContext;
+	XColor xcolor;
+	Colormap colormap;
 
 private:
 	GraphicsObject_X11();
@@ -42,7 +47,7 @@ class GraphicsObjectString_X11 : public GraphicsObject_X11
 {
 public:
 	GraphicsObjectString_X11(const Coord& _pos, const std::string& _str);
-	void Paint(Display* display, Window* win, int screenNo);
+	void Paint();
 	void SetString(const std::string& _str);
 
 protected:
@@ -62,7 +67,7 @@ public:
 
 	virtual ~GraphicsObjectClickable_X11();
 
-	virtual void Paint(Display* display, Window* win, int screenNo) = 0;
+	virtual void Paint() = 0;
 
 	void HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr);
 
@@ -83,7 +88,7 @@ class GraphicsObjectButton_X11 : public GraphicsObjectClickable_X11
 public:
 	GraphicsObjectButton_X11(const Coord& _pos, const Coord& _size);
 
-	void Paint(Display* display, Window* win, int screenNo);
+	void Paint();
 
 
 protected:

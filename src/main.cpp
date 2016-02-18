@@ -6,9 +6,9 @@
 
 int main(void)
 {
-	PongClone pongClone;
-
 	WinApi_X11 winApi(Coord(300, 300));
+
+	PongClone pongClone;
 
 	winApi.EventLoop();
 

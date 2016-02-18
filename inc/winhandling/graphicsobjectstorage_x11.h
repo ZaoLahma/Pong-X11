@@ -16,6 +16,14 @@
 #include "graphicsobject_x11.h"
 #include "jobdispatcher/eventlistenerbase.h"
 
+struct WinDataS
+{
+public:
+	Window* winPtr;
+	Display* displayPtr;
+	uint32_t screenNo;
+};
+
 class GraphicsObjectStorage_X11
 {
 public:
@@ -29,7 +37,11 @@ public:
 
 	void RemoveObject(const uint32_t _objId);
 
-	void Paint(Display* display, Window* win, int screenNo);
+	void Paint();
+
+	void SetWinDataPtr(WinDataS* _winDataPtr);
+
+	const WinDataS* GetWinDataPtr();
 
 	void HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr);
 
@@ -44,6 +56,8 @@ private:
 
 	std::mutex rwMutex;
 	IdToObjectPtrMapT objectsMap;
+
+	WinDataS* winDataPtr;
 };
 
 

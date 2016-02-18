@@ -18,12 +18,19 @@ WinApi_X11::WinApi_X11(const Coord& _winSize) :
 winSize(_winSize),
 displayPtr(nullptr),
 screenNo(-1),
-running(false)
+running(false),
+winDataPtr(new WinDataS())
 {
+	GraphicsObjectStorage_X11::GetApi()->SetWinDataPtr(winDataPtr);
+
 	XInitThreads();
 	displayPtr = XOpenDisplay(NULL);
 
+	winDataPtr->displayPtr = displayPtr;
+
 	screenNo = DefaultScreen(displayPtr);
+
+	winDataPtr->screenNo = screenNo;
 
 	window = XCreateSimpleWindow(displayPtr,
 								 RootWindow(displayPtr, screenNo),
@@ -34,6 +41,8 @@ running(false)
 								 1,
 	                             BlackPixel(displayPtr, screenNo),
 								 WhitePixel(displayPtr, screenNo));
+
+	winDataPtr->winPtr = &window;
 
 	XSelectInput(displayPtr,
 			     window,
@@ -67,6 +76,11 @@ running(false)
 	JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_WIN_RESIZE_EVENT, new WinResizeEventData(Coord(400, 400)));
 }
 
+WinApi_X11::~WinApi_X11()
+{
+	delete winDataPtr;
+}
+
 void WinApi_X11::EventLoop()
 {
 	running = true;
@@ -77,7 +91,7 @@ void WinApi_X11::EventLoop()
 		XNextEvent(displayPtr, &e);
 		if (e.type == Expose)
 		{
-			GraphicsObjectStorage_X11::GetApi()->Paint(displayPtr, &window, screenNo);
+			this->RedrawWindow();
 		}
 
 		if(e.type == ButtonPress)
@@ -137,6 +151,6 @@ void WinApi_X11::ResizeWindow(const Coord& newSize)
 void WinApi_X11::RedrawWindow()
 {
 	XClearWindow(displayPtr, window);
-	GraphicsObjectStorage_X11::GetApi()->Paint(displayPtr, &window, screenNo);
+	GraphicsObjectStorage_X11::GetApi()->Paint();
 	XFlush(displayPtr);
 }
