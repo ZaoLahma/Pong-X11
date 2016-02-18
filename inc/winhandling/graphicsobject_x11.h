@@ -13,12 +13,19 @@
 #include <X11/Xos.h>
 #include <string>
 #include <mutex>
+#include <map>
 
 #include "coord.h"
 #include "jobdispatcher/eventlistenerbase.h"
 
 class Coord;
 struct WinDataS;
+
+#define COLOR_GREEN  0x0
+#define COLOR_RED    0x1
+#define COLOR_BLUE   0x2
+#define COLOR_BLACK  0x3
+#define COLOR_YELLOW 0x4
 
 class GraphicsObject_X11
 {
@@ -35,7 +42,7 @@ protected:
 	Coord pos;
 	const WinDataS* winDataPtr;
 	GC graphicsContext;
-	XColor xcolor;
+	std::map<const uint32_t, XColor> colorsMap;
 	Colormap colormap;
 
 private:

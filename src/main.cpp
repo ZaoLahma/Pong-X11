@@ -6,7 +6,7 @@
 
 int main(void)
 {
-	WinApi_X11 winApi(Coord(300, 300));
+	WinApi_X11 winApi(Coord(300, 300)); //Needs to be instantiated before any X11 object is created
 
 	PongClone pongClone;
 

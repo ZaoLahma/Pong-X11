@@ -23,6 +23,39 @@ objectId(UniqueIdProvider::GetApi()->GetUniqueId())
 
 	graphicsContext = XCreateGC(winDataPtr->displayPtr, *winDataPtr->winPtr, 0, 0);
 	colormap = DefaultColormap(winDataPtr->displayPtr, winDataPtr->screenNo);
+
+	XColor xcolor;
+	xcolor.red = 00000; xcolor.green = 65000; xcolor.blue = 00000;
+	xcolor.flags = DoRed | DoGreen | DoBlue;
+	XAllocColor(winDataPtr->displayPtr, colormap, &xcolor);
+
+	colorsMap[COLOR_GREEN] = xcolor;
+
+	xcolor.red = 65000; xcolor.green = 00000; xcolor.blue = 00000;
+	xcolor.flags = DoRed | DoGreen | DoBlue;
+	XAllocColor(winDataPtr->displayPtr, colormap, &xcolor);
+
+	colorsMap[COLOR_RED] = xcolor;
+
+	xcolor.red = 00000; xcolor.green = 00000; xcolor.blue = 65000;
+	xcolor.flags = DoRed | DoGreen | DoBlue;
+	XAllocColor(winDataPtr->displayPtr, colormap, &xcolor);
+
+	colorsMap[COLOR_BLUE] = xcolor;
+
+	xcolor.red = 65000; xcolor.green = 65000; xcolor.blue = 00000;
+	xcolor.flags = DoRed | DoGreen | DoBlue;
+	XAllocColor(winDataPtr->displayPtr, colormap, &xcolor);
+
+	colorsMap[COLOR_YELLOW] = xcolor;
+
+	xcolor.red = 00000; xcolor.green = 00000; xcolor.blue = 00000;
+	xcolor.flags = DoRed | DoGreen | DoBlue;
+	XAllocColor(winDataPtr->displayPtr, colormap, &xcolor);
+
+	colorsMap[COLOR_BLACK] = xcolor;
+
+	XSetForeground(winDataPtr->displayPtr, graphicsContext, xcolor.pixel);
 }
 
 GraphicsObject_X11::~GraphicsObject_X11()
@@ -110,16 +143,16 @@ void GraphicsObjectClickable_X11::HandleEvent(const uint32_t eventNo, const Even
 GraphicsObjectButton_X11::GraphicsObjectButton_X11(const Coord& _pos, const Coord& _size) :
 GraphicsObjectClickable_X11(_pos, _size)
 {
-	xcolor.red = 32000; xcolor.green = 65000; xcolor.blue = 32000;
-	xcolor.flags = DoRed | DoGreen | DoBlue;
-	XAllocColor(winDataPtr->displayPtr, colormap, &xcolor);
-	XSetForeground(winDataPtr->displayPtr, graphicsContext, xcolor.pixel);
+
 }
 
 void GraphicsObjectButton_X11::Paint()
 {
 	if(!beingPressed)
 	{
+		XColor xcolor = colorsMap.find(COLOR_BLUE)->second;
+		XSetForeground(winDataPtr->displayPtr, graphicsContext, xcolor.pixel);
+
 		XDrawLine(winDataPtr->displayPtr, *winDataPtr->winPtr, graphicsContext, pos.GetX(), pos.GetY(), pos.GetX() + size.GetX(), pos.GetY()); //Upper line
 		XDrawLine(winDataPtr->displayPtr, *winDataPtr->winPtr, graphicsContext, pos.GetX(), pos.GetY() + size.GetY(), pos.GetX() + size.GetX(), pos.GetY() + size.GetY()); //lower line
 		XDrawArc(winDataPtr->displayPtr, *winDataPtr->winPtr, graphicsContext, pos.GetX() - 2, pos.GetY(), 4, size.GetY(), -45 * 64, -270 * 64);
@@ -127,6 +160,9 @@ void GraphicsObjectButton_X11::Paint()
 	}
 	else
 	{
+		XColor xcolor = colorsMap.find(COLOR_YELLOW)->second;
+		XSetForeground(winDataPtr->displayPtr, graphicsContext, xcolor.pixel);
+
 		XFillRectangle(winDataPtr->displayPtr, *winDataPtr->winPtr, graphicsContext, pos.GetX(), pos.GetY(), size.GetX(), size.GetY());
 		XFillArc(winDataPtr->displayPtr, *winDataPtr->winPtr, graphicsContext, pos.GetX() - 2, pos.GetY(), 4, size.GetY(), -45 * 64, -270 * 64);
 		XFillArc(winDataPtr->displayPtr, *winDataPtr->winPtr, graphicsContext, pos.GetX() + size.GetX() - 2, pos.GetY(), 4, size.GetY(), -90 * 64, 180 * 64);
