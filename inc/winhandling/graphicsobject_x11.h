@@ -17,9 +17,9 @@
 
 #include "coord.h"
 #include "jobdispatcher/eventlistenerbase.h"
+#include "windata_s.h"
 
 class Coord;
-struct WinDataS;
 
 #define COLOR_GREEN  0x0
 #define COLOR_RED    0x1
@@ -37,6 +37,8 @@ public:
 	uint32_t GetObjectId() const;
 
 	const Coord& GetPos();
+
+	void SetPos(const Coord& _pos);
 
 protected:
 	Coord pos;

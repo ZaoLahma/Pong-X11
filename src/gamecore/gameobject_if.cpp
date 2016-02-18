@@ -5,11 +5,9 @@
  *      Author: janne
  */
 
-#include "gamecore/gameobject.h"
+#include "gamecore/gameobject_if.h"
 
 GameObjectIf::~GameObjectIf()
 {
 
 }
-
-

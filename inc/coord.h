@@ -21,6 +21,8 @@ public:
 	void SetX(const int _x);
 	void SetY(const int _y);
 
+	Coord operator+(const Coord&);
+
 protected:
 
 private:

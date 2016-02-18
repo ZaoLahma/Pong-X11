@@ -10,15 +10,19 @@
 
 #include "jobdispatcher/eventlistenerbase.h"
 
+class GameObject_X11;
+
 class PongClone : public EventListenerBase
 {
 public:
 	PongClone();
+	~PongClone();
 	void HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr);
 
 protected:
 
 private:
+	GameObject_X11* gameObjectPtr;
 };
 
 

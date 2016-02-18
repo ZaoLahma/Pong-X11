@@ -15,14 +15,7 @@
 
 #include "graphicsobject_x11.h"
 #include "jobdispatcher/eventlistenerbase.h"
-
-struct WinDataS
-{
-public:
-	Window* winPtr;
-	Display* displayPtr;
-	uint32_t screenNo;
-};
+#include "windata_s.h"
 
 class GraphicsObjectStorage_X11
 {

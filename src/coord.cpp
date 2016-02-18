@@ -40,3 +40,8 @@ void Coord::SetY(const int _y)
 {
 	y = _y;
 }
+
+Coord Coord::operator+(const Coord& _coord)
+{
+	return Coord(x + _coord.GetX(), y + _coord.GetY());
+}

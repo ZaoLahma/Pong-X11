@@ -8,9 +8,12 @@ int main(void)
 {
 	WinApi_X11 winApi(Coord(300, 300)); //Needs to be instantiated before any X11 object is created
 
-	PongClone pongClone;
+	PongClone* pongClonePtr = new PongClone();
 
 	winApi.EventLoop();
+
+	delete pongClonePtr;
+	pongClonePtr = nullptr;
 
 	GraphicsObjectStorage_X11::GetApi()->DropInstance();
 
