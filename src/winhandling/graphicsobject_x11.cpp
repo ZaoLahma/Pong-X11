@@ -145,10 +145,17 @@ void GraphicsObjectClickable_X11::HandleEvent(const uint32_t eventNo, const Even
 }
 
 //Button
-GraphicsObjectButton_X11::GraphicsObjectButton_X11(const Coord& _pos, const Coord& _size) :
-GraphicsObjectClickable_X11(_pos, _size)
+GraphicsObjectButton_X11::GraphicsObjectButton_X11(const Coord& _pos, const std::string& _text) :
+GraphicsObjectClickable_X11(_pos, Coord()),
+buttonTextPtr(new GraphicsObjectString_X11(Coord(_pos.GetX() + 2, _pos.GetY() + 20), _text))
 {
+	size = Coord(_text.length() * 6 + 3, 30);
+}
 
+GraphicsObjectButton_X11::~GraphicsObjectButton_X11()
+{
+	delete buttonTextPtr;
+	buttonTextPtr = nullptr;
 }
 
 void GraphicsObjectButton_X11::Paint()

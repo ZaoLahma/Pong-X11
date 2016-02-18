@@ -60,9 +60,11 @@ winDataPtr(new WinDataS())
 	XSetWMProtocols(displayPtr, window, &WM_DELETE_WINDOW, 1);
 
 	//Testing purposes... Remove me
-	GraphicsObjectString_X11* testString = new GraphicsObjectString_X11(Coord(20, 20), "Hej");
+	GraphicsObjectString_X11* testString = new GraphicsObjectString_X11(Coord(20, 20), "This is a text");
 
-	GraphicsObjectButton_X11* testButton = new GraphicsObjectButton_X11(Coord(30, 30), Coord(30, 20));
+	GraphicsObjectButton_X11* testButton = new GraphicsObjectButton_X11(Coord(30, 30), "I am a button");
+
+	GraphicsObjectButton_X11* testButton2 = new GraphicsObjectButton_X11(Coord(30, 70), "I am a another button");
 
 	JobDispatcher::GetApi()->SubscribeToEvent(GRAPHICS_AVAIL_EVENT, this);
 

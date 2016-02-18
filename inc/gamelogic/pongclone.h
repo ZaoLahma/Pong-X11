@@ -10,7 +10,7 @@
 
 #include "jobdispatcher/eventlistenerbase.h"
 
-class GameObject_X11;
+class PongBallGameObject;
 
 class PongClone : public EventListenerBase
 {
@@ -22,7 +22,7 @@ public:
 protected:
 
 private:
-	GameObject_X11* gameObjectPtr;
+	PongBallGameObject* gameObjectPtr;
 };
 
 

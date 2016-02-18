@@ -13,14 +13,3 @@ mov(_mov)
 {
 
 }
-
-void GameObject_X11::Update()
-{
-	Coord newPos = mov + GetPos();
-	SetPos(newPos);
-}
-
-void GameObject_X11::Paint()
-{
-	XFillArc(winDataPtr->displayPtr, *winDataPtr->winPtr, graphicsContext, pos.GetX() - 2, pos.GetY(), 80, 80, 0 * 64, 90 * 64);
-}

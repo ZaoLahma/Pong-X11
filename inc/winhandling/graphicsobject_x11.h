@@ -95,7 +95,8 @@ private:
 class GraphicsObjectButton_X11 : public GraphicsObjectClickable_X11
 {
 public:
-	GraphicsObjectButton_X11(const Coord& _pos, const Coord& _size);
+	GraphicsObjectButton_X11(const Coord& _pos, const std::string& _text);
+	~GraphicsObjectButton_X11();
 
 	void Paint();
 
@@ -104,6 +105,8 @@ protected:
 
 private:
 	GraphicsObjectButton_X11();
+
+	GraphicsObjectString_X11* buttonTextPtr;
 
 	void OnClick();
 	void OnRelease();

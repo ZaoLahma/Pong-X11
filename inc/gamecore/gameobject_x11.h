@@ -8,19 +8,15 @@
 #ifndef INC_GAMECORE_GAMEOBJECT_X11_H_
 #define INC_GAMECORE_GAMEOBJECT_X11_H_
 
-
-#include "gameobject_if.h"
 #include "winhandling/graphicsobject_x11.h"
 #include "coord.h"
 
-class GameObject_X11 : public GameObjectIf, public GraphicsObject_X11
+class GameObject_X11 : public GraphicsObject_X11
 {
 public:
 	GameObject_X11(const Coord& _pos, const Coord& _mov);
 
-	virtual void Update();
-
-	void Paint();
+	virtual void Update() = 0;
 
 protected:
 	Coord mov;

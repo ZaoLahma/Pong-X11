@@ -6,7 +6,7 @@
  */
 
 #include "gamelogic/pongclone.h"
-#include "gamecore/gameobject_x11.h"
+#include "gamelogic/pongballgameobject.h"
 #include "jobdispatcher/jobdispatcher.h"
 #include "winhandling/graphicsevents.h"
 #include "coord.h"
@@ -16,11 +16,11 @@
 PongClone::PongClone()
 {
 	//Testing purposes
-	gameObjectPtr = new GameObject_X11(Coord(90, 90), Coord(10, 10));
+	gameObjectPtr = new PongBallGameObject(Coord(90, 90), Coord(5, 5));
 
 	JobDispatcher::GetApi()->SubscribeToEvent(TEST_TIMEOUT_EVENT, this);
 
-	JobDispatcher::GetApi()->RaiseEventIn(TEST_TIMEOUT_EVENT, nullptr, 2000);
+	JobDispatcher::GetApi()->RaiseEventIn(TEST_TIMEOUT_EVENT, nullptr, 100);
 }
 
 PongClone::~PongClone()
@@ -37,7 +37,7 @@ void PongClone::HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr
 	case TEST_TIMEOUT_EVENT:
 		gameObjectPtr->Update();
 		JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_REDRAW_EVENT, nullptr);
-		JobDispatcher::GetApi()->RaiseEventIn(TEST_TIMEOUT_EVENT, nullptr, 2000);
+		JobDispatcher::GetApi()->RaiseEventIn(TEST_TIMEOUT_EVENT, nullptr, 100);
 		break;
 	default:
 		break;
