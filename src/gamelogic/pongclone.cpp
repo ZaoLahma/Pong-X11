@@ -25,6 +25,7 @@ PongClone::PongClone()
 
 PongClone::~PongClone()
 {
+	JobDispatcher::GetApi()->UnsubscribeToEvent(TEST_TIMEOUT_EVENT, this);
 	delete gameObjectPtr;
 	gameObjectPtr = nullptr;
 }

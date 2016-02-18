@@ -18,7 +18,7 @@ class GameObject_X11 : public GameObjectIf, public GraphicsObject_X11
 public:
 	GameObject_X11(const Coord& _pos, const Coord& _mov);
 
-	void Update();
+	virtual void Update();
 
 	void Paint();
 
