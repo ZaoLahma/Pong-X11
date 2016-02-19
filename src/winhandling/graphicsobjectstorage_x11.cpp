@@ -73,12 +73,9 @@ void GraphicsObjectStorage_X11::Paint()
 
 	IdToObjectPtrMapT::iterator objIter = objectsMap.begin();
 
-	XClearWindow(winDataPtr->displayPtr, *winDataPtr->winPtr);
-
 	for( ; objIter != objectsMap.end(); ++objIter)
 	{
 		objIter->second->Paint();
-		XFlush(winDataPtr->displayPtr);
 	}
 }
 

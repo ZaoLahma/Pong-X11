@@ -15,6 +15,7 @@
 #include <iostream>
 
 WinApi_X11::WinApi_X11(const Coord& _winSize) :
+active(true),
 winSize(_winSize),
 displayPtr(nullptr),
 screenNo(-1),
@@ -59,13 +60,6 @@ winDataPtr(new WinDataS())
 
 	XSetWMProtocols(displayPtr, window, &WM_DELETE_WINDOW, 1);
 
-	//Testing purposes... Remove me
-	GraphicsObjectString_X11* testString = new GraphicsObjectString_X11(Coord(20, 20), "This is a text");
-
-	GraphicsObjectButton_X11* testButton = new GraphicsObjectButton_X11(Coord(30, 30), "I am a button");
-
-	GraphicsObjectButton_X11* testButton2 = new GraphicsObjectButton_X11(Coord(30, 70), "I am a another button");
-
 	JobDispatcher::GetApi()->SubscribeToEvent(GRAPHICS_AVAIL_EVENT, this);
 
 	JobDispatcher::GetApi()->SubscribeToEvent(GRAPHICS_WIN_RESIZE_EVENT, this);
@@ -80,7 +74,20 @@ winDataPtr(new WinDataS())
 
 WinApi_X11::~WinApi_X11()
 {
+	std::unique_lock<std::mutex> redrawLock(redrawMutex);
+
+	std::cout<<"WinApi DTOR called"<<std::endl;
+
+	active = false;
+	JobDispatcher::GetApi()->UnsubscribeToEvent(GRAPHICS_REDRAW_EVENT, this);
+	JobDispatcher::GetApi()->UnsubscribeToEvent(GRAPHICS_WIN_RESIZE_EVENT, this);
+	JobDispatcher::GetApi()->UnsubscribeToEvent(GRAPHICS_AVAIL_EVENT, this);
+
 	delete winDataPtr;
+	winDataPtr = nullptr;
+
+	XDestroyWindow(displayPtr, window);
+	XCloseDisplay(displayPtr);
 }
 
 void WinApi_X11::EventLoop()
@@ -117,9 +124,6 @@ void WinApi_X11::EventLoop()
 		  break;
 		}
 	}
-	XDestroyWindow(displayPtr, window);
-	XCloseDisplay(displayPtr);
-
 }
 
 void WinApi_X11::HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr)
@@ -152,5 +156,11 @@ void WinApi_X11::ResizeWindow(const Coord& newSize)
 
 void WinApi_X11::RedrawWindow()
 {
-	GraphicsObjectStorage_X11::GetApi()->Paint();
+	std::unique_lock<std::mutex> redrawLock(redrawMutex);
+	if(active)
+	{
+		XClearWindow(winDataPtr->displayPtr, *winDataPtr->winPtr);
+		GraphicsObjectStorage_X11::GetApi()->Paint();
+		XFlush(winDataPtr->displayPtr);
+	}
 }

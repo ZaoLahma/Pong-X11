@@ -13,19 +13,22 @@
 
 #define TEST_TIMEOUT_EVENT 0x00004500
 
-PongClone::PongClone()
+PongClone::PongClone() :
+gameObjectPtr(nullptr)
 {
 	//Testing purposes
 	gameObjectPtr = new PongBallGameObject(Coord(90, 90), Coord(5, 5));
 
 	JobDispatcher::GetApi()->SubscribeToEvent(TEST_TIMEOUT_EVENT, this);
 
+	JobDispatcher::GetApi()->SubscribeToEvent(GRAPHICS_AVAIL_EVENT, this);
+
 	JobDispatcher::GetApi()->RaiseEventIn(TEST_TIMEOUT_EVENT, nullptr, 100);
 }
 
 PongClone::~PongClone()
 {
-	JobDispatcher::GetApi()->UnsubscribeToEvent(TEST_TIMEOUT_EVENT, this);
+	//JobDispatcher::GetApi()->UnsubscribeToEvent(TEST_TIMEOUT_EVENT, this);
 	delete gameObjectPtr;
 	gameObjectPtr = nullptr;
 }
@@ -37,7 +40,9 @@ void PongClone::HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr
 	case TEST_TIMEOUT_EVENT:
 		gameObjectPtr->Update();
 		JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_REDRAW_EVENT, nullptr);
-		JobDispatcher::GetApi()->RaiseEventIn(TEST_TIMEOUT_EVENT, nullptr, 100);
+		JobDispatcher::GetApi()->RaiseEventIn(TEST_TIMEOUT_EVENT, nullptr, 10);
+		break;
+	case GRAPHICS_AVAIL_EVENT:
 		break;
 	default:
 		break;

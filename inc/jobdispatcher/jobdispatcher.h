@@ -224,7 +224,7 @@ private:
 
 	JobQueue jobQueue;
 
-	EventListenersMap eventListeners;
+	EventNoToEventListenersMap eventEventListeners;
 
 	TimerStorage timerStorage;
 

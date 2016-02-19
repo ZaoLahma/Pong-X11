@@ -11,6 +11,7 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Xos.h>
+#include <mutex>
 #include "coord.h"
 #include "jobdispatcher/eventlistenerbase.h"
 
@@ -34,6 +35,9 @@ private:
 
 	void RedrawWindow();
 
+	std::mutex redrawMutex;
+
+	std::atomic<bool> active;
 	Coord winSize;
 	Display* displayPtr;
 	Window window;
