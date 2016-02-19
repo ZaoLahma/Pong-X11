@@ -17,7 +17,7 @@ PongClone::PongClone() :
 gameObjectPtr(nullptr)
 {
 	//Testing purposes
-	gameObjectPtr = new PongBallGameObject(Coord(90, 90), Coord(5, 5));
+	gameObjectPtr = new PongBallGameObject(Coord(90, 90), Coord(1, 1));
 
 	JobDispatcher::GetApi()->SubscribeToEvent(TEST_TIMEOUT_EVENT, this);
 
@@ -41,7 +41,7 @@ void PongClone::HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr
 	case TEST_TIMEOUT_EVENT:
 		gameObjectPtr->Update();
 		JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_REDRAW_EVENT, nullptr);
-		JobDispatcher::GetApi()->RaiseEventIn(TEST_TIMEOUT_EVENT, nullptr, 10);
+		JobDispatcher::GetApi()->RaiseEventIn(TEST_TIMEOUT_EVENT, nullptr, 5);
 		break;
 	case GRAPHICS_AVAIL_EVENT:
 		break;

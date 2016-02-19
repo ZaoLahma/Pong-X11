@@ -17,7 +17,7 @@ colorOffset(0)
 
 void PongBallGameObject::Update()
 {
-	if(counter > 10)
+	if(counter > 100)
 	{
 		counter = 0;
 		mov.SetX(-mov.GetX());
