@@ -106,12 +106,15 @@ private:
 
 		bool IsIdling();
 
+		uint32_t GetNoOfJobsExecuted();
+
 		void Stop();
 
 	protected:
 
 	private:
 		Worker();
+		uint32_t noOfJobsExecuted;
 		JobQueue* queuePtr;
 		std::mutex executionNotificationMutex;
 		std::unique_lock<std::mutex> executionLock;
@@ -201,8 +204,6 @@ private:
 	private:
 		bool subscribedToEvent;
 		std::mutex subscribeMutex;
-		uint32_t idBase;
-		uint32_t currentId;
 		TimerBaseMap timers;
 		std::mutex timerMutex;
 	};
@@ -225,6 +226,7 @@ private:
 	JobQueue jobQueue;
 
 	EventNoToEventListenersMap eventEventListeners;
+	EventListenerToEventNoMap eventListenersEvents;
 
 	TimerStorage timerStorage;
 
