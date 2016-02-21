@@ -8,7 +8,7 @@
 #ifndef INC_GAMELOGIC_PONGBALLGAMEOBJECT_H_
 #define INC_GAMELOGIC_PONGBALLGAMEOBJECT_H_
 
-#include "gamecore/GameObject_x11.h"
+#include "gamecore/gameobject_x11.h"
 
 class PongBallGameObject : public GameObject_X11
 {

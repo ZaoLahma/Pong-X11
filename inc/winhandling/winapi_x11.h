@@ -12,6 +12,8 @@
 #include <X11/Xutil.h>
 #include <X11/Xos.h>
 #include <mutex>
+#include <atomic>
+#include <cstdint>
 #include "coord.h"
 #include "jobdispatcher/eventlistenerbase.h"
 
