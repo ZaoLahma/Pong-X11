@@ -8,6 +8,7 @@
 #ifndef INC_GAMECORE_GAMEOBJECT_X11_H_
 #define INC_GAMECORE_GAMEOBJECT_X11_H_
 
+#include <map>
 #include "winhandling/graphicsobject_x11.h"
 #include "coord.h"
 

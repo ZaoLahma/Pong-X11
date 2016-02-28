@@ -13,21 +13,21 @@ class Coord
 {
 public:
 	Coord();
-	Coord(int x, int y);
+	Coord(double x, double y);
 
-	int GetX() const;
-	int GetY() const;
+	double GetX() const;
+	double GetY() const;
 
-	void SetX(const int _x);
-	void SetY(const int _y);
+	void SetX(double _x);
+	void SetY(double _y);
 
 	Coord operator+(const Coord&);
 
 protected:
 
 private:
-	int x;
-	int y;
+	double x;
+	double y;
 };
 
 

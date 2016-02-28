@@ -14,29 +14,29 @@ y(0)
 
 }
 
-Coord::Coord(int _x, int _y) :
+Coord::Coord(double _x, double _y) :
 x(_x),
 y(_y)
 {
 
 }
 
-int Coord::GetX() const
+double Coord::GetX() const
 {
 	return x;
 }
 
-int Coord::GetY() const
+double Coord::GetY() const
 {
 	return y;
 }
 
-void Coord::SetX(const int _x)
+void Coord::SetX(const double _x)
 {
 	x = _x;
 }
 
-void Coord::SetY(const int _y)
+void Coord::SetY(const double _y)
 {
 	y = _y;
 }
