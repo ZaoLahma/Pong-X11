@@ -15,16 +15,27 @@ class PongBallGameObject : public GameObject_X11
 public:
 	PongBallGameObject(const Coord& _pos, const Coord& _mov);
 	void Update();
-	void Paint();
 
 protected:
 
 private:
-	PongBallGameObject();
+	class PongBallGraphicsObject : public GraphicsObject_X11
+	{
+	public:
+		PongBallGraphicsObject(const Coord& _pos);
+		void Paint();
+		void SwitchColor();
 
+	protected:
+
+	private:
+		PongBallGraphicsObject();
+		uint32_t colorOffset;
+		XColor currentColor;
+	};
+
+	PongBallGameObject();
 	uint32_t counter;
-	uint32_t colorOffset;
-	XColor currentColor;
 
 };
 

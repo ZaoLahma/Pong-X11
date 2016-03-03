@@ -8,8 +8,13 @@
 #include "gamecore/gameobject_x11.h"
 
 GameObject_X11::GameObject_X11(const Coord& _pos, const Coord& _mov) :
-GraphicsObject_X11(_pos),
+pos(_pos),
 mov(_mov)
+{
+
+}
+
+GameObject_X11::~GameObject_X11()
 {
 
 }

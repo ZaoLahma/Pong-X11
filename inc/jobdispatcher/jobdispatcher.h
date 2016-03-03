@@ -12,6 +12,9 @@
 #include <atomic>
 #include <map>
 #include <cinttypes>
+#include <fstream>
+#include <sstream>
+#include <chrono>
 
 #include "jobbase.h"
 #include "eventlistenerbase.h"
@@ -34,6 +37,8 @@ public:
 	static JobDispatcher* GetApi();
 
 	//API
+	void Log(const char* formatString, ...);
+
 	void ExecuteJob(JobBase* jobPtr);
 
 	void ExecuteJobIn(JobBase* jobPtr, const uint32_t ms);
@@ -53,6 +58,9 @@ public:
 protected:
 
 private:
+	std::string GetTimeStamp();
+
+
 	//Helper class definitions
 	class JobQueue
 	{
@@ -71,10 +79,10 @@ private:
 		JobBasePtrVectorT queue_1;
 		JobBasePtrVectorT queue_2;
 
-		std::atomic<uint32_t> indexToExecute;
-
 		JobBasePtrVectorT* currentQueue;
 		JobBasePtrVectorT* queueToExecute;
+
+		JobBasePtrVectorT::iterator currentElement;
 
 	};
 
@@ -95,6 +103,22 @@ private:
 		const uint32_t eventNo;
 
 		EventDataBase* eventDataPtr;
+	};
+
+	class LogJob : public JobBase
+	{
+	public:
+		LogJob(const std::string& _stringToPrint);
+
+		void Execute();
+	protected:
+	private:
+		LogJob();
+
+		std::string stringToPrint;
+		std::ofstream fileStream;
+		static std::mutex fileAccessMutex;
+
 	};
 
 	class Worker : public ThreadObject

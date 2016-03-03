@@ -12,15 +12,18 @@
 #include "winhandling/graphicsobject_x11.h"
 #include "coord.h"
 
-class GameObject_X11 : public GraphicsObject_X11
+class GameObject_X11
 {
 public:
 	GameObject_X11(const Coord& _pos, const Coord& _mov);
+	virtual ~GameObject_X11();
 
 	virtual void Update() = 0;
 
 protected:
+	Coord pos;
 	Coord mov;
+	GraphicsObjectVector graphicsObjects;
 
 private:
 	GameObject_X11();

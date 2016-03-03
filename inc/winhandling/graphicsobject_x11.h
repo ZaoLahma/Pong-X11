@@ -14,6 +14,7 @@
 #include <string>
 #include <mutex>
 #include <map>
+#include <vector>
 
 #include "coord.h"
 #include "jobdispatcher/eventlistenerbase.h"
@@ -51,6 +52,8 @@ private:
 	GraphicsObject_X11();
 	uint32_t objectId;
 };
+
+typedef std::vector<GraphicsObject_X11*> GraphicsObjectVector;
 
 class GraphicsObjectString_X11 : public GraphicsObject_X11
 {
