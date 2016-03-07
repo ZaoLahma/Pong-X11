@@ -15,6 +15,25 @@ GameObjectStorage_X11::GameObjectStorage_X11()
 
 }
 
+void GameObjectStorage_X11::DropInstance()
+{
+	delete instance;
+	instance = nullptr;
+}
+
+GameObjectStorage_X11::~GameObjectStorage_X11()
+{
+	GameObjectMap::iterator objIter = gameObjectMap.begin();
+
+	while(objIter != gameObjectMap.end())
+	{
+		delete objIter->second;
+		objIter = gameObjectMap.begin();
+	}
+
+	gameObjectMap.clear();
+}
+
 GameObjectStorage_X11* GameObjectStorage_X11::GetApi()
 {
 	if(nullptr == instance)

@@ -8,16 +8,18 @@ int main(void)
 {
 	JobDispatcher::GetApi()->Log("Main called");
 
-	WinApi_X11 winApi(Coord(300, 300));
+	WinApi_X11* winApiPtr = new WinApi_X11(Coord(300, 300));
 
 	PongClone* pongClonePtr = new PongClone();
 
-	winApi.EventLoop();
+	winApiPtr->EventLoop();
 
 	delete pongClonePtr;
 	pongClonePtr = nullptr;
 
 	GraphicsObjectStorage_X11::GetApi()->DropInstance();
+
+	delete winApiPtr;
 
 	JobDispatcher::GetApi()->Log("Execution finished");
 

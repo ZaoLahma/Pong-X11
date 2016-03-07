@@ -12,6 +12,8 @@
 #include "winhandling/graphicsevents.h"
 #include "coord.h"
 
+#include <iostream>
+
 #define TEST_TIMEOUT_EVENT 0x00004500
 
 PongClone::PongClone() :
@@ -31,8 +33,9 @@ PongClone::~PongClone()
 {
 	JobDispatcher::GetApi()->UnsubscribeToEvent(TEST_TIMEOUT_EVENT, this);
 	JobDispatcher::GetApi()->UnsubscribeToEvent(GRAPHICS_AVAIL_EVENT, this);
-	delete gameObjectPtr;
-	gameObjectPtr = nullptr;
+	GameObjectStorage_X11::GetApi()->DropInstance();
+
+	std::cout<<"PongClone DTOR exiting"<<std::endl;
 }
 
 void PongClone::HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr)

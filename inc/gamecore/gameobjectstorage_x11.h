@@ -16,7 +16,11 @@ typedef std::map<uint32_t, GameObject_X11*> GameObjectMap;
 class GameObjectStorage_X11
 {
 public:
+	~GameObjectStorage_X11();
+
 	static GameObjectStorage_X11* GetApi();
+
+	void DropInstance();
 
 	void AddObject(GameObject_X11*);
 
