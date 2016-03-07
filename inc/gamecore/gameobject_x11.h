@@ -20,7 +20,10 @@ public:
 
 	virtual void Update() = 0;
 
+	uint32_t GetGameObjectId() const;
+
 protected:
+	const uint32_t gameObjectId;
 	Coord pos;
 	Coord mov;
 	GraphicsObjectVector graphicsObjects;

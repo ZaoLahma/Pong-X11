@@ -5,6 +5,7 @@
  *      Author: janne
  */
 
+#include "gamecore/gameobjectstorage_x11.h"
 #include "gamelogic/pongclone.h"
 #include "gamelogic/pongballgameobject.h"
 #include "jobdispatcher/jobdispatcher.h"
@@ -39,7 +40,7 @@ void PongClone::HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr
 	switch(eventNo)
 	{
 	case TEST_TIMEOUT_EVENT:
-		gameObjectPtr->Update();
+		GameObjectStorage_X11::GetApi()->Update();
 		JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_REDRAW_EVENT, nullptr);
 		JobDispatcher::GetApi()->RaiseEventIn(TEST_TIMEOUT_EVENT, nullptr, 5);
 		break;
