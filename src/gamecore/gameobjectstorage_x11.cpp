@@ -66,6 +66,11 @@ void GameObjectStorage_X11::RemoveObject(GameObject_X11* gameObjectPtr)
 	}
 }
 
+GameObjectPair GameObjectStorage_X11::GetAllObjects()
+{
+	return std::make_pair(gameObjectMap.begin(), gameObjectMap.end());
+}
+
 void GameObjectStorage_X11::Update()
 {
 	for(auto const& gameObject : gameObjectMap)

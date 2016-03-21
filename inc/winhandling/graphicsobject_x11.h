@@ -38,11 +38,13 @@ public:
 	uint32_t GetObjectId() const;
 
 	const Coord& GetPos();
+	const Coord& GetSize();
 
 	void SetPos(const Coord& _pos);
 
 protected:
 	Coord pos;
+	Coord size;
 	const WinDataS* winDataPtr;
 	GC graphicsContext;
 	std::map<const uint32_t, XColor> colorsMap;

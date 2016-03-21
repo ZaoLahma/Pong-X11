@@ -22,6 +22,12 @@ public:
 
 	uint32_t GetGameObjectId() const;
 
+	Coord& GetPos();
+
+	Coord& GetMov();
+
+	GraphicsObjectVector& GetGraphicsObjects();
+
 protected:
 	const uint32_t gameObjectId;
 	Coord pos;

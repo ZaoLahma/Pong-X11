@@ -74,6 +74,11 @@ const Coord& GraphicsObject_X11::GetPos()
 	return pos;
 }
 
+const Coord& GraphicsObject_X11::GetSize()
+{
+	return size;
+}
+
 void GraphicsObject_X11::SetPos(const Coord& _pos)
 {
 	pos = _pos;

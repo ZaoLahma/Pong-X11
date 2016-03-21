@@ -28,6 +28,20 @@ GameObject_X11::~GameObject_X11()
 	}
 }
 
+Coord& GameObject_X11::GetPos()
+{
+	return pos;
+}
+
+Coord& GameObject_X11::GetMov()
+{
+	return mov;
+}
+
+GraphicsObjectVector& GameObject_X11::GetGraphicsObjects()
+{
+	return graphicsObjects;
+}
 
 uint32_t GameObject_X11::GetGameObjectId() const
 {
