@@ -42,7 +42,7 @@ colorOffset(0)
 void PongBallGameObject::PongBallGraphicsObject::Paint()
 {
 	XSetForeground(winDataPtr->displayPtr, graphicsContext, currentColor.pixel);
-	XFillArc(winDataPtr->displayPtr, *winDataPtr->winPtr, graphicsContext, pos.GetX() - 2, pos.GetY(), 80, 80, 0 * 64, 360 * 64);
+	XFillArc(winDataPtr->displayPtr, *winDataPtr->winPtr, graphicsContext, pos.GetX() - 2, pos.GetY(), 20, 20, 0 * 64, 360 * 64);
 }
 
 void PongBallGameObject::PongBallGraphicsObject::SwitchColor()

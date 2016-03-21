@@ -27,6 +27,7 @@ class Coord;
 #define COLOR_BLUE   0x2
 #define COLOR_BLACK  0x3
 #define COLOR_YELLOW 0x4
+#define COLOR_WHITE  0x5
 
 class GraphicsObject_X11
 {

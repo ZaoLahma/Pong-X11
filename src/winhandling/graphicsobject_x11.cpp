@@ -49,6 +49,12 @@ objectId(UniqueIdProvider::GetApi()->GetUniqueId())
 
 	colorsMap[COLOR_YELLOW] = xcolor;
 
+	xcolor.red = 65000; xcolor.green = 65000; xcolor.blue = 65000;
+	xcolor.flags = DoRed | DoGreen | DoBlue;
+	XAllocColor(winDataPtr->displayPtr, colormap, &xcolor);
+
+	colorsMap[COLOR_WHITE] = xcolor;
+
 	xcolor.red = 00000; xcolor.green = 00000; xcolor.blue = 00000;
 	xcolor.flags = DoRed | DoGreen | DoBlue;
 	XAllocColor(winDataPtr->displayPtr, colormap, &xcolor);

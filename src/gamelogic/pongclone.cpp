@@ -8,6 +8,7 @@
 #include "gamecore/gameobjectstorage_x11.h"
 #include "gamelogic/pongclone.h"
 #include "gamelogic/pongballgameobject.h"
+#include "gamelogic/pongfieldgameobject.h"
 #include "jobdispatcher/jobdispatcher.h"
 #include "winhandling/graphicsevents.h"
 #include "coord.h"
@@ -17,14 +18,17 @@
 #define TEST_TIMEOUT_EVENT 0x00004500
 
 PongClone::PongClone() :
-gameObjectPtr(nullptr)
+pongBallPtr(nullptr),
+fieldSize(900, 500)
 {
-	//Testing purposes
-	gameObjectPtr = new PongBallGameObject(Coord(90, 90), Coord(1, 1));
+	pongFieldPtr = new PongFieldGameObject(fieldSize);
+	pongBallPtr = new PongBallGameObject(Coord(90, 90), Coord(1, 1));
 
 	JobDispatcher::GetApi()->SubscribeToEvent(TEST_TIMEOUT_EVENT, this);
 
 	JobDispatcher::GetApi()->SubscribeToEvent(GRAPHICS_AVAIL_EVENT, this);
+
+	JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_WIN_RESIZE_EVENT, new WinResizeEventData(fieldSize));
 
 	JobDispatcher::GetApi()->RaiseEventIn(TEST_TIMEOUT_EVENT, nullptr, 100);
 }
@@ -48,6 +52,7 @@ void PongClone::HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr
 		JobDispatcher::GetApi()->RaiseEventIn(TEST_TIMEOUT_EVENT, nullptr, 5);
 		break;
 	case GRAPHICS_AVAIL_EVENT:
+		JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_WIN_RESIZE_EVENT, new WinResizeEventData(fieldSize));
 		break;
 	default:
 		break;

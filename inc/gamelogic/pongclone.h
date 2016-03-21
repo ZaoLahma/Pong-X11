@@ -11,6 +11,7 @@
 #include "jobdispatcher/eventlistenerbase.h"
 
 class PongBallGameObject;
+class PongFieldGameObject;
 
 class PongClone : public EventListenerBase
 {
@@ -22,7 +23,9 @@ public:
 protected:
 
 private:
-	PongBallGameObject* gameObjectPtr;
+	PongBallGameObject* pongBallPtr;
+	PongFieldGameObject* pongFieldPtr;
+	Coord fieldSize;
 };
 
 

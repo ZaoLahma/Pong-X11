@@ -67,9 +67,6 @@ winDataPtr(new WinDataS())
 	JobDispatcher::GetApi()->SubscribeToEvent(GRAPHICS_REDRAW_EVENT, this);
 
 	JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_AVAIL_EVENT, nullptr);
-
-	//Testing purposes... Remove me
-	JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_WIN_RESIZE_EVENT, new WinResizeEventData(Coord(400, 400)));
 }
 
 WinApi_X11::~WinApi_X11()
@@ -137,6 +134,7 @@ void WinApi_X11::HandleEvent(const uint32_t eventNo, const EventDataBase* dataPt
 	{
 		const WinResizeEventData* resizeDataPtr = static_cast<const WinResizeEventData*>(dataPtr);
 		winSize = resizeDataPtr->GetNewSize();
+		JobDispatcher::GetApi()->Log("WinApi_X11::HandleEvent(): Resizing screen to: %d, %d", winSize.GetX(), winSize.GetY());
 		ResizeWindow(winSize);
 	}
 		break;
