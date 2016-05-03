@@ -26,6 +26,8 @@ void PongBallGameObject::Update()
 
 	Coord newPos = mov + graphicsObjects[0]->GetPos();
 
+	pos = newPos;
+
 	if(newPos.GetY() > 495)
 	{
 		mov.SetY(-mov.GetY());
@@ -57,7 +59,7 @@ void PongBallGameObject::HandleEvent(const uint32_t eventNo, const EventDataBase
 //Graphics object
 PongBallGameObject::PongBallGraphicsObject::PongBallGraphicsObject(const Coord& _pos) :
 GraphicsObject_X11(_pos),
-colorOffset(0)
+colorOffset(1)
 {
 	currentColor = colorsMap.find(COLOR_GREEN + colorOffset)->second;
 }
@@ -74,7 +76,7 @@ void PongBallGameObject::PongBallGraphicsObject::SwitchColor()
 
 	if(colorOffset > COLOR_YELLOW)
 	{
-		colorOffset = 0;
+		colorOffset = 1;
 	}
 
 	currentColor = colorsMap.find(COLOR_GREEN + colorOffset)->second;
