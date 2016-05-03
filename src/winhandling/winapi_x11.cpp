@@ -112,7 +112,7 @@ void WinApi_X11::EventLoop()
 
 		if (e.type == KeyPress)
 		{
-
+			JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_KEY_PRESSED_EVENT, new KeyPressedData(e.xkey.keycode));
 		}
 
 		if ((e.type == ClientMessage) &&

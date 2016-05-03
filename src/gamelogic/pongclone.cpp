@@ -9,6 +9,7 @@
 #include "gamelogic/pongclone.h"
 #include "gamelogic/pongballgameobject.h"
 #include "gamelogic/pongfieldgameobject.h"
+#include "gamelogic/pongpaddlegameobject.h"
 #include "jobdispatcher/jobdispatcher.h"
 #include "winhandling/graphicsevents.h"
 #include "coord.h"
@@ -23,6 +24,8 @@ fieldSize(900, 500)
 {
 	pongFieldPtr = new PongFieldGameObject(fieldSize);
 	pongBallPtr = new PongBallGameObject(Coord(90, 90), Coord(1, 1));
+	pongPaddlePtr = new PongPaddleGameObject(Coord(10, fieldSize.GetY() / 2));
+
 
 	JobDispatcher::GetApi()->SubscribeToEvent(TEST_TIMEOUT_EVENT, this);
 

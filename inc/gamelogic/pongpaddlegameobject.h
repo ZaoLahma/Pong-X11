@@ -19,6 +19,8 @@ public:
 
 	void Update();
 
+	void SetPos(const Coord& newPos);
+
 	bool CheckCollision(PongBallGameObject* ball);
 
 	void HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr);

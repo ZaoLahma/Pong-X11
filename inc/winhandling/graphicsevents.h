@@ -18,6 +18,7 @@
 #define GRAPHICS_MOUSE_CLICKED_EVENT  GRAPHICS_EVENTS_BASE + 0x2
 #define GRAPHICS_MOUSE_RELEASED_EVENT GRAPHICS_EVENTS_BASE + 0x3
 #define GRAPHICS_REDRAW_EVENT         GRAPHICS_EVENTS_BASE + 0x4
+#define GRAPHICS_KEY_PRESSED_EVENT	  GRAPHICS_EVENTS_BASE + 0x5
 
 class WinResizeEventData : public EventDataBase
 {
@@ -71,6 +72,33 @@ private:
 	MouseClickedData();
 
 	Coord pos;
+};
+
+class KeyPressedData : public EventDataBase
+{
+public:
+	EventDataBase* clone() const
+	{
+		return new KeyPressedData(*this);
+	}
+
+	KeyPressedData(const unsigned int _key) :
+	key(_key)
+	{
+
+	}
+
+	unsigned int GetChar() const
+	{
+		return key;
+	}
+
+protected:
+
+private:
+	KeyPressedData();
+
+	unsigned int key;
 };
 
 #endif /* INC_WINHANDLING_GRAPHICSEVENTS_H_ */

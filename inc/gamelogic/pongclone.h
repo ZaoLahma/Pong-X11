@@ -12,6 +12,7 @@
 
 class PongBallGameObject;
 class PongFieldGameObject;
+class PongPaddleGameObject;
 
 class PongClone : public EventListenerBase
 {
@@ -25,6 +26,7 @@ protected:
 private:
 	PongBallGameObject* pongBallPtr;
 	PongFieldGameObject* pongFieldPtr;
+	PongPaddleGameObject* pongPaddlePtr;
 	Coord fieldSize;
 };
 
