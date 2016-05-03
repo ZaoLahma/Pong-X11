@@ -11,15 +11,7 @@
 #include <vector>
 #include <map>
 
-class EventDataBase
-{
-public:
-	virtual ~EventDataBase() {}
-	virtual EventDataBase* clone() const = 0;
-protected:
-
-public:
-};
+#include "eventdatabase.h"
 
 class EventListenerBase
 {
