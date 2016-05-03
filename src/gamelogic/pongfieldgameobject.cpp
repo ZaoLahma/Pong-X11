@@ -10,6 +10,7 @@
 PongFieldGameObject::PongFieldGameObject(const Coord& _size) :
 GameObject_X11(Coord(0, 0), Coord(0, 0))
 {
+	onCollision = Coord(-1, -1);
 	graphicsObjects.push_back(new PongFieldGameObject::PongFieldGraphicsObject(_size));
 }
 

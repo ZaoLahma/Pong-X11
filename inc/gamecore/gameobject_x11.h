@@ -10,6 +10,8 @@
 
 #include <map>
 #include "winhandling/graphicsobject_x11.h"
+
+#include "jobdispatcher/jobdispatcher.h"
 #include "coord.h"
 
 class GameObject_X11
@@ -26,12 +28,17 @@ public:
 
 	Coord& GetMov();
 
+	void SetMov(const Coord&);
+
 	GraphicsObjectVector& GetGraphicsObjects();
+
+	const Coord& GetOnCollision();
 
 protected:
 	const uint32_t gameObjectId;
 	Coord pos;
 	Coord mov;
+	Coord onCollision;
 	GraphicsObjectVector graphicsObjects;
 
 private:

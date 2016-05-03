@@ -9,12 +9,15 @@
 #define INC_GAMELOGIC_PONGBALLGAMEOBJECT_H_
 
 #include "gamecore/gameobject_x11.h"
+#include "jobdispatcher/eventlistenerbase.h"
 
-class PongBallGameObject : public GameObject_X11
+class PongBallGameObject : public GameObject_X11, public EventListenerBase
 {
 public:
 	PongBallGameObject(const Coord& _pos, const Coord& _mov);
 	void Update();
+
+	void HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr);
 
 protected:
 

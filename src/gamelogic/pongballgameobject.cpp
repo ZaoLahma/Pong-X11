@@ -19,16 +19,39 @@ void PongBallGameObject::Update()
 	if(counter > 100)
 	{
 		counter = 0;
-		mov.SetX(-mov.GetX());
-		mov.SetY(-mov.GetY());
-
 		static_cast<PongBallGameObject::PongBallGraphicsObject*>(graphicsObjects[0])->SwitchColor();
 	}
 
 	counter++;
 
 	Coord newPos = mov + graphicsObjects[0]->GetPos();
+
+	if(newPos.GetY() > 495)
+	{
+		mov.SetY(-mov.GetY());
+	}
+
+	if(newPos.GetY() < 5)
+	{
+		mov.SetY(-mov.GetY());
+	}
+
+	if(newPos.GetX() > 895)
+	{
+		mov.SetX(-mov.GetX());
+	}
+
+	if(newPos.GetX() < 5)
+	{
+		mov.SetX(-mov.GetX());
+	}
+
 	graphicsObjects[0]->SetPos(newPos);
+}
+
+void PongBallGameObject::HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr)
+{
+
 }
 
 //Graphics object
@@ -42,7 +65,7 @@ colorOffset(0)
 void PongBallGameObject::PongBallGraphicsObject::Paint()
 {
 	XSetForeground(winDataPtr->displayPtr, graphicsContext, currentColor.pixel);
-	XFillArc(winDataPtr->displayPtr, *winDataPtr->winPtr, graphicsContext, pos.GetX() - 2, pos.GetY(), 20, 20, 0 * 64, 360 * 64);
+	XFillArc(winDataPtr->displayPtr, *winDataPtr->winPtr, graphicsContext, pos.GetX() - 10, pos.GetY() - 10, 20, 20, 0 * 64, 360 * 64);
 }
 
 void PongBallGameObject::PongBallGraphicsObject::SwitchColor()
