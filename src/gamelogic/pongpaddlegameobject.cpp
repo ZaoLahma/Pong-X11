@@ -6,11 +6,15 @@
  */
 
 #include "gamelogic/pongpaddlegameobject.h"
+#include "winhandling/graphicsevents.h"
 
 PongPaddleGameObject::PongPaddleGameObject(const Coord& _pos) :
 GameObject_X11(_pos, Coord(0, 0))
 {
 	graphicsObjects.push_back(new PongPaddleGraphicsObject(_pos));
+
+	JobDispatcher::GetApi()->SubscribeToEvent(GRAPHICS_KEY_PRESSED_EVENT,
+											  this);
 }
 
 void PongPaddleGameObject::Update()
@@ -31,7 +35,26 @@ bool PongPaddleGameObject::CheckCollision(PongBallGameObject* ball)
 
 void PongPaddleGameObject::HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr)
 {
+	switch(eventNo)
+	{
+	case GRAPHICS_KEY_PRESSED_EVENT:
+	{
+		const KeyPressedData* keyPressedDataPtr = static_cast<const KeyPressedData*>(dataPtr);
 
+		if(keyPressedDataPtr->GetChar() == 0x86)
+		{
+			SetPos(Coord(pos.GetX(), pos.GetY() - 15));
+		}
+		if(keyPressedDataPtr->GetChar() == 0x85)
+		{
+			SetPos(Coord(pos.GetX(), pos.GetY() + 15));
+		}
+	}
+	break;
+
+	default:
+		break;
+	}
 }
 
 PongPaddleGameObject::PongPaddleGraphicsObject::PongPaddleGraphicsObject(const Coord& _pos) :
