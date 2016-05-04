@@ -27,6 +27,12 @@ private:
 	PongBallGameObject* pongBallPtr;
 	PongFieldGameObject* pongFieldPtr;
 	PongPaddleGameObject* pongPaddlePtr;
+	GraphicsObjectString_X11* playerOneScoreText;
+	GraphicsObjectString_X11* playerTwoScoreText;
+
+	uint8_t playerOneScore;
+	uint8_t playerTwoScore;
+
 	Coord fieldSize;
 };
 

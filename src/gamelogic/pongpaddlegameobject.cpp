@@ -65,11 +65,11 @@ void PongPaddleGameObject::HandleEvent(const uint32_t eventNo, const EventDataBa
 
 		if(keyPressedDataPtr->GetChar() == 0x86)
 		{
-			SetPos(Coord(pos.GetX(), pos.GetY() - 15));
+			SetPos(Coord(pos.GetX(), pos.GetY() - 30));
 		}
 		if(keyPressedDataPtr->GetChar() == 0x85)
 		{
-			SetPos(Coord(pos.GetX(), pos.GetY() + 15));
+			SetPos(Coord(pos.GetX(), pos.GetY() + 30));
 		}
 	}
 	break;
