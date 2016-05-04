@@ -8,8 +8,9 @@
 #include "gamelogic/pongpaddlegameobject.h"
 #include "winhandling/graphicsevents.h"
 
-PongPaddleGameObject::PongPaddleGameObject(const Coord& _pos) :
-GameObject_X11(_pos, Coord(0, 0))
+PongPaddleGameObject::PongPaddleGameObject(const Coord& _pos, const Coord& _playFieldSize) :
+GameObject_X11(_pos, Coord(0, 0)),
+playFieldSize(_playFieldSize)
 {
 	graphicsObjects.push_back(new PongPaddleGraphicsObject(_pos));
 
@@ -65,11 +66,28 @@ void PongPaddleGameObject::HandleEvent(const uint32_t eventNo, const EventDataBa
 
 		if(keyPressedDataPtr->GetChar() == 0x86)
 		{
-			SetPos(Coord(pos.GetX(), pos.GetY() - 30));
+			if(pos.GetY() > graphicsObjects[0]->GetSize().GetY())
+			{
+				SetPos(Coord(pos.GetX(), pos.GetY() - 30));
+			}
+			else
+			{
+				SetPos(Coord(pos.GetX(),
+						     graphicsObjects[0]->GetSize().GetY() / 2));
+			}
 		}
 		if(keyPressedDataPtr->GetChar() == 0x85)
 		{
-			SetPos(Coord(pos.GetX(), pos.GetY() + 30));
+			if(pos.GetY() < playFieldSize.GetY() - graphicsObjects[0]->GetSize().GetY())
+			{
+				SetPos(Coord(pos.GetX(), pos.GetY() + 30));
+			}
+			else
+			{
+				SetPos(Coord(pos.GetX(),
+						     playFieldSize.GetY() -
+							 graphicsObjects[0]->GetSize().GetY() / 2));
+			}
 		}
 	}
 	break;

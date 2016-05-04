@@ -15,7 +15,7 @@
 class PongPaddleGameObject : public GameObject_X11, public EventListenerBase
 {
 public:
-	PongPaddleGameObject(const Coord& _pos);
+	PongPaddleGameObject(const Coord& _pos, const Coord& _playFieldSize);
 
 	void Update();
 
@@ -30,6 +30,7 @@ protected:
 
 private:
 	PongPaddleGameObject();
+	const Coord playFieldSize;
 
 	class PongPaddleGraphicsObject : public GraphicsObject_X11
 	{

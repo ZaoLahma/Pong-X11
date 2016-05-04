@@ -24,7 +24,7 @@ fieldSize(900, 500)
 {
 	pongFieldPtr = new PongFieldGameObject(fieldSize);
 	pongBallPtr = new PongBallGameObject(Coord(90, 90), Coord(1, 1), fieldSize);
-	pongPaddlePtr = new PongPaddleGameObject(Coord(10, fieldSize.GetY() / 2));
+	pongPaddlePtr = new PongPaddleGameObject(Coord(10, fieldSize.GetY() / 2), fieldSize);
 
 	playerOneScoreText = new GraphicsObjectString_X11(Coord(10, 25), "Player 1 score: " + std::to_string(playerOneScore));
 
@@ -59,7 +59,7 @@ void PongClone::HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr
 		GameObjectStorage_X11::GetApi()->Update();
 		pongPaddlePtr->CheckCollision(pongBallPtr);
 		JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_REDRAW_EVENT, nullptr);
-		JobDispatcher::GetApi()->RaiseEventIn(PONG_GAME_TIMEOUT_EVENT, nullptr, 2);
+		JobDispatcher::GetApi()->RaiseEventIn(PONG_GAME_TIMEOUT_EVENT, nullptr, 5);
 		break;
 	case GRAPHICS_AVAIL_EVENT:
 		JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_WIN_RESIZE_EVENT, new WinResizeEventData(fieldSize));
