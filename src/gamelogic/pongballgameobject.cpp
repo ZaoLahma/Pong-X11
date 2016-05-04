@@ -7,8 +7,9 @@
 
 #include "gamelogic/pongballgameobject.h"
 
-PongBallGameObject::PongBallGameObject(const Coord& _pos, const Coord& _mov) :
+PongBallGameObject::PongBallGameObject(const Coord& _pos, const Coord& _mov, const Coord& _playFieldSize) :
 GameObject_X11(_pos, _mov),
+playFieldSize(_playFieldSize),
 counter(0)
 {
 	graphicsObjects.push_back(new PongBallGameObject::PongBallGraphicsObject(_pos));
@@ -28,7 +29,7 @@ void PongBallGameObject::Update()
 
 	pos = newPos;
 
-	if(newPos.GetY() > 495)
+	if(newPos.GetY() > playFieldSize.GetY() - 5)
 	{
 		mov.SetY(-mov.GetY());
 	}
@@ -38,14 +39,16 @@ void PongBallGameObject::Update()
 		mov.SetY(-mov.GetY());
 	}
 
-	if(newPos.GetX() > 895)
+	if(newPos.GetX() > playFieldSize.GetX() - 5)
 	{
 		mov.SetX(-mov.GetX());
 	}
 
 	if(newPos.GetX() < 5)
 	{
-		mov.SetX(-mov.GetX());
+		newPos = Coord(playFieldSize.GetX() / 2,
+				       playFieldSize.GetY() / 2);
+		pos = newPos;
 	}
 
 	graphicsObjects[0]->SetPos(newPos);

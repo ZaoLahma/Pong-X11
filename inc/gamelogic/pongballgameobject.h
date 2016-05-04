@@ -14,7 +14,9 @@
 class PongBallGameObject : public GameObject_X11, public EventListenerBase
 {
 public:
-	PongBallGameObject(const Coord& _pos, const Coord& _mov);
+	PongBallGameObject(const Coord& _pos,
+			           const Coord& _mov,
+					   const Coord& _playFieldSize);
 	void Update();
 
 	void HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr);
@@ -38,6 +40,7 @@ private:
 	};
 
 	PongBallGameObject();
+	Coord playFieldSize;
 	uint32_t counter;
 
 };

@@ -30,6 +30,28 @@ void PongPaddleGameObject::SetPos(const Coord& newPos)
 
 bool PongPaddleGameObject::CheckCollision(PongBallGameObject* ball)
 {
+	if(ball->GetPos().GetX() <= pos.GetX())
+	{
+		double lowerLimit = (graphicsObjects[0]->GetPos().GetY() +
+			    		  graphicsObjects[0]->GetSize().GetY() / 2);
+
+		double upperLimit = (graphicsObjects[0]->GetPos().GetY() -
+						  graphicsObjects[0]->GetSize().GetY() / 2);
+
+		printf("lowerLimit: %f, upperLimit: %f, ball->GetPos().GetY(): %f\n",
+				lowerLimit,
+				upperLimit,
+				ball->GetPos().GetY());
+
+		if((ball->GetPos().GetY() < lowerLimit) &&
+		   (ball->GetPos().GetY() > upperLimit))
+		{
+			printf("Bounce!\n");
+			ball->SetMov(Coord(-ball->GetMov().GetX(),
+					            ball->GetMov().GetY()));
+		}
+	}
+
 	return false;
 }
 
