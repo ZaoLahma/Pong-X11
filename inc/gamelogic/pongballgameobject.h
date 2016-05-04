@@ -10,6 +10,35 @@
 
 #include "gamecore/gameobject_x11.h"
 #include "jobdispatcher/eventlistenerbase.h"
+#include "jobdispatcher/eventdatabase.h"
+
+#define BALL_HIT_WALL_EVENT 0x00000057
+
+enum WallIdentifier
+{
+	LEFT_WALL,
+	RIGHT_WALL
+};
+
+class BallResetEventData : public EventDataBase
+{
+public:
+	BallResetEventData(const WallIdentifier& _wall) :
+	wall(_wall)
+	{
+
+	}
+
+	EventDataBase* clone() const
+	{
+		return new BallResetEventData(*this);
+	}
+
+	WallIdentifier wall;
+
+private:
+	BallResetEventData();
+};
 
 class PongBallGameObject : public GameObject_X11, public EventListenerBase
 {

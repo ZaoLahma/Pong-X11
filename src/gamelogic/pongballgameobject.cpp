@@ -49,6 +49,8 @@ void PongBallGameObject::Update()
 		newPos = Coord(playFieldSize.GetX() / 2,
 				       playFieldSize.GetY() / 2);
 		pos = newPos;
+		JobDispatcher::GetApi()->RaiseEvent(BALL_HIT_WALL_EVENT,
+											new BallResetEventData(LEFT_WALL));
 	}
 
 	graphicsObjects[0]->SetPos(newPos);

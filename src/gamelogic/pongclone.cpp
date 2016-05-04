@@ -27,6 +27,8 @@ fieldSize(900, 500)
 	pongPaddlePtr = new PongPaddleGameObject(Coord(10, fieldSize.GetY() / 2));
 
 
+	JobDispatcher::GetApi()->SubscribeToEvent(BALL_HIT_WALL_EVENT, this);
+
 	JobDispatcher::GetApi()->SubscribeToEvent(PONG_GAME_TIMEOUT_EVENT, this);
 
 	JobDispatcher::GetApi()->SubscribeToEvent(GRAPHICS_AVAIL_EVENT, this);
@@ -58,6 +60,16 @@ void PongClone::HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr
 	case GRAPHICS_AVAIL_EVENT:
 		JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_WIN_RESIZE_EVENT, new WinResizeEventData(fieldSize));
 		break;
+	case BALL_HIT_WALL_EVENT:
+	{
+		const BallResetEventData* ballResetEventDataPtr = static_cast<const BallResetEventData*>(dataPtr);
+
+		if(ballResetEventDataPtr->wall == LEFT_WALL)
+		{
+			printf("Player 2 scored\n");
+		}
+	}
+	break;
 	default:
 		break;
 	}
