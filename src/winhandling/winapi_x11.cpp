@@ -73,8 +73,6 @@ WinApi_X11::~WinApi_X11()
 {
 	std::unique_lock<std::mutex> redrawLock(redrawMutex);
 
-	std::cout<<"WinApi DTOR called"<<std::endl;
-
 	active = false;
 	JobDispatcher::GetApi()->UnsubscribeToEvent(GRAPHICS_REDRAW_EVENT, this);
 	JobDispatcher::GetApi()->UnsubscribeToEvent(GRAPHICS_WIN_RESIZE_EVENT, this);
@@ -134,7 +132,7 @@ void WinApi_X11::HandleEvent(const uint32_t eventNo, const EventDataBase* dataPt
 	{
 		const WinResizeEventData* resizeDataPtr = static_cast<const WinResizeEventData*>(dataPtr);
 		winSize = resizeDataPtr->GetNewSize();
-		JobDispatcher::GetApi()->Log("WinApi_X11::HandleEvent(): Resizing screen to: %d, %d", winSize.GetX(), winSize.GetY());
+		JobDispatcher::GetApi()->Log("WinApi_X11::HandleEvent(): Resizing screen to: %f, %f", winSize.GetX(), winSize.GetY());
 		ResizeWindow(winSize);
 	}
 		break;

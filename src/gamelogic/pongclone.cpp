@@ -22,7 +22,10 @@ PongClone::PongClone() :
 pongBallPtr(nullptr),
 fieldSize(900, 500)
 {
-	pongFieldPtr = new PongFieldGameObject(fieldSize);
+	playerOneScore = 0;
+	playerTwoScore = 0;
+
+	pongFieldPtr =new PongFieldGameObject(fieldSize);
 	pongBallPtr = new PongBallGameObject(Coord(90, 90), Coord(1, 1), fieldSize);
 	pongPaddlePtr = new PongPaddleGameObject(Coord(10, fieldSize.GetY() / 2), fieldSize);
 
@@ -47,8 +50,6 @@ PongClone::~PongClone()
 	JobDispatcher::GetApi()->UnsubscribeToEvent(PONG_GAME_TIMEOUT_EVENT, this);
 	JobDispatcher::GetApi()->UnsubscribeToEvent(GRAPHICS_AVAIL_EVENT, this);
 	GameObjectStorage_X11::GetApi()->DropInstance();
-
-	std::cout<<"PongClone DTOR exiting"<<std::endl;
 }
 
 void PongClone::HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr)
@@ -72,7 +73,11 @@ void PongClone::HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr
 		{
 			playerTwoScore++;
 			playerTwoScoreText->SetString("Player 2 score: " + std::to_string(playerTwoScore));
-			printf("Player 2 scored\n");
+		}
+		else if(ballResetEventDataPtr->wall == RIGHT_WALL)
+		{
+			playerOneScore++;
+			playerOneScoreText->SetString("Player 1 score: " + std::to_string(playerOneScore));
 		}
 	}
 	break;

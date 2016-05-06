@@ -42,6 +42,8 @@ void PongBallGameObject::Update()
 	if(newPos.GetX() > playFieldSize.GetX() - 5)
 	{
 		mov.SetX(-mov.GetX());
+		JobDispatcher::GetApi()->RaiseEvent(BALL_HIT_WALL_EVENT,
+											new BallResetEventData(RIGHT_WALL));
 	}
 
 	if(newPos.GetX() < 5)
