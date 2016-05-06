@@ -19,8 +19,6 @@ public:
 
 	void Update();
 
-	void SetPos(const Coord& newPos);
-
 	bool CheckCollision(PongBallGameObject* ball);
 
 	void HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr);
@@ -30,6 +28,7 @@ protected:
 
 private:
 	PongPaddleGameObject();
+	void SetPos(const Coord& newPos);
 	const Coord playFieldSize;
 
 	class PongPaddleGraphicsObject : public GraphicsObject_X11

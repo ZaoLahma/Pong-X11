@@ -7,6 +7,7 @@
 
 #include "gamelogic/pongpaddlegameobject.h"
 #include "winhandling/graphicsevents.h"
+#include <cmath>
 
 PongPaddleGameObject::PongPaddleGameObject(const Coord& _pos, const Coord& _playFieldSize) :
 GameObject_X11(_pos, Coord(0, 0)),
@@ -31,25 +32,27 @@ void PongPaddleGameObject::SetPos(const Coord& newPos)
 
 bool PongPaddleGameObject::CheckCollision(PongBallGameObject* ball)
 {
-	if(ball->GetPos().GetX() <= pos.GetX())
+	double xDist = ball->GetPos().GetX() - pos.GetX();
+
+	if(xDist < 0)
+	{
+		xDist = -xDist;
+	}
+
+	if(xDist <= 2)
 	{
 		double lowerLimit = (graphicsObjects[0]->GetPos().GetY() +
-			    		  graphicsObjects[0]->GetSize().GetY() / 2);
+			    		  	 graphicsObjects[0]->GetSize().GetY() / 2);
 
 		double upperLimit = (graphicsObjects[0]->GetPos().GetY() -
-						  graphicsObjects[0]->GetSize().GetY() / 2);
-
-		printf("lowerLimit: %f, upperLimit: %f, ball->GetPos().GetY(): %f\n",
-				lowerLimit,
-				upperLimit,
-				ball->GetPos().GetY());
+						  	 graphicsObjects[0]->GetSize().GetY() / 2);
 
 		if((ball->GetPos().GetY() < lowerLimit) &&
 		   (ball->GetPos().GetY() > upperLimit))
 		{
-			printf("Bounce!\n");
 			ball->SetMov(Coord(-ball->GetMov().GetX(),
 					            ball->GetMov().GetY()));
+			ball->Update();
 		}
 	}
 

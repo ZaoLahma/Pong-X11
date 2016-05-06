@@ -26,7 +26,8 @@ protected:
 private:
 	PongBallGameObject* pongBallPtr;
 	PongFieldGameObject* pongFieldPtr;
-	PongPaddleGameObject* pongPaddlePtr;
+	PongPaddleGameObject* pongPaddleOnePtr;
+	PongPaddleGameObject* pongPaddleTwoPtr;
 	GraphicsObjectString_X11* playerOneScoreText;
 	GraphicsObjectString_X11* playerTwoScoreText;
 

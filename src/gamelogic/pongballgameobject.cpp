@@ -17,10 +17,10 @@ counter(0)
 
 void PongBallGameObject::Update()
 {
-	if(counter > 100)
+	if(counter > 50)
 	{
 		counter = 0;
-		static_cast<PongBallGameObject::PongBallGraphicsObject*>(graphicsObjects[0])->SwitchColor();
+		//static_cast<PongBallGameObject::PongBallGraphicsObject*>(graphicsObjects[0])->SwitchColor();
 	}
 
 	counter++;
@@ -41,7 +41,9 @@ void PongBallGameObject::Update()
 
 	if(newPos.GetX() > playFieldSize.GetX() - 5)
 	{
-		mov.SetX(-mov.GetX());
+		newPos = Coord(playFieldSize.GetX() / 2,
+				       playFieldSize.GetY() / 2);
+		pos = newPos;
 		JobDispatcher::GetApi()->RaiseEvent(BALL_HIT_WALL_EVENT,
 											new BallResetEventData(RIGHT_WALL));
 	}
@@ -66,9 +68,9 @@ void PongBallGameObject::HandleEvent(const uint32_t eventNo, const EventDataBase
 //Graphics object
 PongBallGameObject::PongBallGraphicsObject::PongBallGraphicsObject(const Coord& _pos) :
 GraphicsObject_X11(_pos),
-colorOffset(1)
+colorOffset(0)
 {
-	currentColor = colorsMap.find(COLOR_GREEN + colorOffset)->second;
+	currentColor = colorsMap.find(COLOR_YELLOW)->second;
 }
 
 void PongBallGameObject::PongBallGraphicsObject::Paint()
