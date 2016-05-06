@@ -9,9 +9,12 @@
 #include "winhandling/graphicsevents.h"
 #include <cmath>
 
-PongPaddleGameObject::PongPaddleGameObject(const Coord& _pos, const Coord& _playFieldSize) :
+PongPaddleGameObject::PongPaddleGameObject(const Coord& _pos,
+		   	   	   	   	   	   	   	   	   const Coord& _playFieldSize,
+										   const uint32_t _player) :
 GameObject_X11(_pos, Coord(0, 0)),
-playFieldSize(_playFieldSize)
+playFieldSize(_playFieldSize),
+player(_player)
 {
 	graphicsObjects.push_back(new PongPaddleGraphicsObject(_pos));
 
@@ -67,7 +70,8 @@ void PongPaddleGameObject::HandleEvent(const uint32_t eventNo, const EventDataBa
 	{
 		const KeyPressedData* keyPressedDataPtr = static_cast<const KeyPressedData*>(dataPtr);
 
-		if(keyPressedDataPtr->GetChar() == 0x86)
+		if((player == 1 && keyPressedDataPtr->GetChar() == 0x86) ||
+		   (player == 2 && keyPressedDataPtr->GetChar() == 0xfe))
 		{
 			if(pos.GetY() > graphicsObjects[0]->GetSize().GetY())
 			{
@@ -79,7 +83,8 @@ void PongPaddleGameObject::HandleEvent(const uint32_t eventNo, const EventDataBa
 						     graphicsObjects[0]->GetSize().GetY() / 2));
 			}
 		}
-		if(keyPressedDataPtr->GetChar() == 0x85)
+		if((player == 1 && keyPressedDataPtr->GetChar() == 0x85) ||
+		   (player == 2 && keyPressedDataPtr->GetChar() == 0xff))
 		{
 			if(pos.GetY() < playFieldSize.GetY() - graphicsObjects[0]->GetSize().GetY())
 			{

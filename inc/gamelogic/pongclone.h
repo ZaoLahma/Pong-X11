@@ -13,6 +13,7 @@
 class PongBallGameObject;
 class PongFieldGameObject;
 class PongPaddleGameObject;
+class PongAI;
 
 class PongClone : public EventListenerBase
 {
@@ -30,6 +31,7 @@ private:
 	PongPaddleGameObject* pongPaddleTwoPtr;
 	GraphicsObjectString_X11* playerOneScoreText;
 	GraphicsObjectString_X11* playerTwoScoreText;
+	PongAI* pongAI;
 
 	uint8_t playerOneScore;
 	uint8_t playerTwoScore;

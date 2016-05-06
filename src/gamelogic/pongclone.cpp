@@ -10,6 +10,7 @@
 #include "gamelogic/pongballgameobject.h"
 #include "gamelogic/pongfieldgameobject.h"
 #include "gamelogic/pongpaddlegameobject.h"
+#include "gamelogic/pongAI.h"
 #include "jobdispatcher/jobdispatcher.h"
 #include "winhandling/graphicsevents.h"
 #include "coord.h"
@@ -27,13 +28,18 @@ fieldSize(900, 500)
 
 	pongFieldPtr =new PongFieldGameObject(fieldSize);
 	pongBallPtr = new PongBallGameObject(Coord(90, 90), Coord(1, 1), fieldSize);
-	pongPaddleOnePtr = new PongPaddleGameObject(Coord(10, fieldSize.GetY() / 2), fieldSize);
-	pongPaddleTwoPtr = new PongPaddleGameObject(Coord(fieldSize.GetX() - 15, fieldSize.GetY() / 2), fieldSize);
+	pongPaddleOnePtr = new PongPaddleGameObject(Coord(10, fieldSize.GetY() / 2),
+												fieldSize,
+												1);
+	pongPaddleTwoPtr = new PongPaddleGameObject(Coord(fieldSize.GetX() - 15, fieldSize.GetY() / 2),
+												fieldSize,
+												2);
 	playerOneScoreText = new GraphicsObjectString_X11(Coord(10, 25), "Player 1 score: " + std::to_string(playerOneScore));
 
 	playerTwoScoreText = new GraphicsObjectString_X11(Coord(fieldSize.GetX() - 113, 25), "Player 2 score: " + std::to_string(playerTwoScore));
 
 
+	pongAI = new PongAI(pongPaddleTwoPtr);
 	JobDispatcher::GetApi()->SubscribeToEvent(BALL_HIT_WALL_EVENT, this);
 
 	JobDispatcher::GetApi()->SubscribeToEvent(PONG_GAME_TIMEOUT_EVENT, this);
@@ -58,6 +64,7 @@ void PongClone::HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr
 	{
 	case PONG_GAME_TIMEOUT_EVENT:
 		GameObjectStorage_X11::GetApi()->Update();
+		pongAI->TrackBall(pongBallPtr);
 		pongPaddleOnePtr->CheckCollision(pongBallPtr);
 		pongPaddleTwoPtr->CheckCollision(pongBallPtr);
 		JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_REDRAW_EVENT, nullptr);

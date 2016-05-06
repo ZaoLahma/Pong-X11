@@ -8,13 +8,21 @@
 #ifndef INC_GAMELOGIC_PONGAI_H_
 #define INC_GAMELOGIC_PONGAI_H_
 
+#include "gamelogic/pongballgameobject.h"
+#include "gamelogic/pongpaddlegameobject.h"
+
 class PongAI
 {
 public:
+	PongAI(PongPaddleGameObject* paddlePtr);
+
+	void TrackBall(PongBallGameObject* ballPtr);
 
 protected:
 
 private:
+	PongAI();
+	PongPaddleGameObject* paddle;
 };
 
 
