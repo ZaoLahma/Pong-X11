@@ -39,7 +39,9 @@ fieldSize(900, 500)
 	playerTwoScoreText = new GraphicsObjectString_X11(Coord(fieldSize.GetX() - 113, 25), "Player 2 score: " + std::to_string(playerTwoScore));
 
 
-	pongAI = new PongAI(pongPaddleTwoPtr);
+	pongAITwo = new PongAI(pongPaddleTwoPtr, 2);
+	pongAIOne = new PongAI(pongPaddleOnePtr, 1);
+
 	JobDispatcher::GetApi()->SubscribeToEvent(BALL_HIT_WALL_EVENT, this);
 
 	JobDispatcher::GetApi()->SubscribeToEvent(PONG_GAME_TIMEOUT_EVENT, this);
@@ -64,7 +66,8 @@ void PongClone::HandleEvent(const uint32_t eventNo, const EventDataBase* dataPtr
 	{
 	case PONG_GAME_TIMEOUT_EVENT:
 		GameObjectStorage_X11::GetApi()->Update();
-		pongAI->TrackBall(pongBallPtr);
+		pongAITwo->TrackBall(pongBallPtr);
+		pongAIOne->TrackBall(pongBallPtr);
 		pongPaddleOnePtr->CheckCollision(pongBallPtr);
 		pongPaddleTwoPtr->CheckCollision(pongBallPtr);
 		JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_REDRAW_EVENT, nullptr);

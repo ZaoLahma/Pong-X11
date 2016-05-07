@@ -31,7 +31,8 @@ private:
 	PongPaddleGameObject* pongPaddleTwoPtr;
 	GraphicsObjectString_X11* playerOneScoreText;
 	GraphicsObjectString_X11* playerTwoScoreText;
-	PongAI* pongAI;
+	PongAI* pongAITwo;
+	PongAI* pongAIOne;
 
 	uint8_t playerOneScore;
 	uint8_t playerTwoScore;

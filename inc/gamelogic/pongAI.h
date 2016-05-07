@@ -14,7 +14,7 @@
 class PongAI
 {
 public:
-	PongAI(PongPaddleGameObject* paddlePtr);
+	PongAI(PongPaddleGameObject* paddlePtr, uint32_t _player);
 
 	void TrackBall(PongBallGameObject* ballPtr);
 
@@ -24,6 +24,10 @@ private:
 	PongAI();
 	PongPaddleGameObject* paddle;
 	double xDistance;
+	uint32_t player;
+
+	uint32_t KEY_UP;
+	uint32_t KEY_DOWN;
 };
 
 
