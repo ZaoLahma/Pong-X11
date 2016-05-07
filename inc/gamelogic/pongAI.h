@@ -23,6 +23,7 @@ protected:
 private:
 	PongAI();
 	PongPaddleGameObject* paddle;
+	double xDistance;
 };
 
 

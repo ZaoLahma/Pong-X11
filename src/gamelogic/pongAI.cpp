@@ -9,22 +9,34 @@
 #include "jobdispatcher/jobdispatcher.h"
 #include "winhandling/graphicsevents.h"
 
-PongAI::PongAI(PongPaddleGameObject* paddlePtr) : paddle(paddlePtr)
+PongAI::PongAI(PongPaddleGameObject* paddlePtr) :
+paddle(paddlePtr), xDistance(0)
 {
 
 }
 
 void PongAI::TrackBall(PongBallGameObject* ballPtr)
 {
-	double paddleSize = paddle->GetGraphicsObjects()[0]->GetSize().GetY();
+	double prevXDistance = xDistance;
 
-	if(ballPtr->GetPos().GetY() > paddle->GetPos().GetY() + paddleSize / 2)
+	xDistance = paddle->GetPos().GetX() - ballPtr->GetPos().GetX();
+	if(0 < xDistance)
 	{
-		JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_KEY_PRESSED_EVENT, new KeyPressedData(0xff));
+		xDistance = -xDistance;
 	}
 
-	if(ballPtr->GetPos().GetY() < paddle->GetPos().GetY() - paddleSize / 2)
+	if(xDistance > prevXDistance)
 	{
-		JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_KEY_PRESSED_EVENT, new KeyPressedData(0xfe));
+		double paddleSize = paddle->GetGraphicsObjects()[0]->GetSize().GetY();
+
+		if(ballPtr->GetPos().GetY() > paddle->GetPos().GetY() + paddleSize / 2)
+		{
+			JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_KEY_PRESSED_EVENT, new KeyPressedData(0xff));
+		}
+
+		if(ballPtr->GetPos().GetY() < paddle->GetPos().GetY() - paddleSize / 2)
+		{
+			JobDispatcher::GetApi()->RaiseEvent(GRAPHICS_KEY_PRESSED_EVENT, new KeyPressedData(0xfe));
+		}
 	}
 }

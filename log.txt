@@ -1,3 +1,2 @@
-[2016-05-06 15:13:47.856922000]Main called
-[2016-05-06 15:13:47.951087000]WinApi_X11::HandleEvent(): Resizing screen to: 900.000000, 500.000000
-[2016-05-06 15:14:28.911293000]Execution finished
+[2016-05-07 10:48:55.489833000]Main called
+[2016-05-07 10:48:55.981139000]WinApi_X11::HandleEvent(): Resizing screen to: 900.000000, 500.000000
